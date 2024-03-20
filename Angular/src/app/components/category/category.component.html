@@ -1,0 +1,6 @@
+<div class="w-75 mx-auto my-5">
+  <h1 class="text-center">{{category?.CategoryName}} Category</h1>
+  <p class="text-center fs-5">{{category?.CategoryDescription}}</p>
+</div>
+
+<app-product-item [products]="products" (RefreshProducts)="GetProducts($event)"></app-product-item>

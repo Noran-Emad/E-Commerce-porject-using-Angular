@@ -1,0 +1,9 @@
+.aproductimage{
+aspect-ratio: 1/1;
+}
+
+.aproductimage img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

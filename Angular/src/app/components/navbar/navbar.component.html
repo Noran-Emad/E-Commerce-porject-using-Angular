@@ -1,0 +1,37 @@
+<div style="height: 3.5rem;"></div>
+<nav class="navbar navbar-expand-lg navbar-light bg-grid text-white px-lg-5 fixed-top">
+  <div class="container-fluid ">
+    <a class="navbar-brand text-white" routerLink="">Shop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end my-nav-items">
+
+        <li class="nav-item mx-1 my-0 roundedcustom-circle">
+          <a class="nav-link text-dark" aria-current="page" routerLink="">Home</a>
+        </li>
+
+        <ng-container *ngIf="isuserLogged() else Unauthcartbtn">
+          <li class="nav-item roundedcustom-circle cartnavitem">
+            <a routerLink="cart">
+              <span class="d-inline-block px-1 text-dark">Cart</span>
+              <span class="cartcountnum  d-inline-block ">{{Count}}</span>
+            </a>
+          </li>
+        </ng-container>
+
+        <ng-template #Unauthcartbtn>
+          <li class="nav-item roundedcustom-circle cartnavitem">
+            <a style="cursor: pointer;" (click)="myalert()">
+              <span class="d-inline-block px-1 text-dark">Cart</span>
+            </a>
+          </li>
+        </ng-template>
+
+      </ul>
+    </div>
+  </div>
+</nav>

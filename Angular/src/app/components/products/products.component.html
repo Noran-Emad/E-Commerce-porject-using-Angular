@@ -1,0 +1,59 @@
+<p>products works!</p>
+
+<div class="container">
+  <div class="row bg-white">
+
+    <div class="col-6 aproductimage p-4">
+      <img src={{product.productImage}}>
+    </div>
+
+    <div class="col-6 p-4">
+
+      <div>{{product.CategoryID.CategoryName}}</div>
+      <div class="fw-bold fs-2 py-2">{{product.ProductName}}</div>
+      <div class="pb-2">{{product.productDescription}}</div>
+
+
+      <ng-container *ngIf="product.Discount > 0 else HasNoDiscount">
+        <div class="text-truncate mx-0 my-0 p-0">
+          <span class="fw-bold fs-4">{{ (product.productPrice - (product.productPrice * (product.Discount / 100))) |
+            number }}</span>
+          <span class="text currncy-disc"> EGP </span>
+        </div>
+
+        <div class="text-muted p-0 m-0 fs-6">
+          <span class="text-decoration-line-through text-muted p-1">
+            {{product.productPrice | number}}
+          </span>
+          <span class="fw-bold" style="font-size: 0.8rem; color: green;">{{ product.Discount }}% OFF</span>
+        </div>
+      </ng-container>
+
+      <ng-template #HasNoDiscount>
+        <div><span class="fw-bold fs-3">{{product.productPrice| number}}</span><span class="fs-6 mx-1">EGP</span></div>
+      </ng-template>
+
+
+
+      <ng-container *ngIf="isProductinCart else ProductNotinCart">
+        <select class="py-2 px-4 mt-3" (change)="UpdateQuantity($event,product._id)" [(ngModel)]="inQuantity">
+          <ng-container *ngFor="let item of createRange(product.productQuantity)">
+            <option>{{item}}</option>
+          </ng-container>
+        </select>
+
+        <button (click)="RemoveFromCart(product)" class="btn btn-danger w-75 ms-2">Remove</button>
+      </ng-container>
+
+      <ng-template #ProductNotinCart>
+        <select class="py-2 px-4 mt-3" [(ngModel)]="outQuantity">
+          <ng-container *ngFor="let item of createRange(product.productQuantity)">
+            <option>{{item}}</option>
+          </ng-container>
+        </select>
+        <button (click)="AddToCart(product)" class="btn btn-success w-75 ms-2">Add</button>
+      </ng-template>
+
+    </div>
+  </div>
+</div>
