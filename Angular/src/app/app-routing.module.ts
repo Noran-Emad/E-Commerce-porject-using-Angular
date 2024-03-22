@@ -4,12 +4,14 @@ import { HomeComponent } from './components/home/home.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ProductsComponent } from './components/products/products.component';
 import { CategoryComponent } from './components/category/category.component';
+import { OrderComponent } from './components/order/order.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent },
   {path:'products/:id',component:ProductsComponent },
   {path:'cart',component:CartComponent},
   {path:'category/:id',component:CategoryComponent},
+  {path:'orders',component:OrderComponent},
 ];
 
 @NgModule({

@@ -30,6 +30,10 @@
   position: relative;
   color: black;
 }
+.itemsNot li{
+  position: relative;
+  color: rgb(255, 255, 255) !important;
+}
 
 .my-nav-items li a {
   height: fit-content;

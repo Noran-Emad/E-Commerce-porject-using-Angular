@@ -1,0 +1,16 @@
+.itemsimgdiv{
+    width: 6rem;
+    height: 6rem;
+}
+
+.itemsimgdiv img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.noroderimg img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

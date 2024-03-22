@@ -1,9 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../services/category.service';
-import { CartComponent } from '../cart/cart.component';
 
 @Component({
   selector: 'app-home',
@@ -11,22 +10,20 @@ import { CartComponent } from '../cart/cart.component';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnDestroy {
-  static InProgress: boolean = false;
   cartSubscription?: Subscription;
   categorySubscription?: Subscription;
   productsSubscription?: Subscription;
 
-  localCartProgress = () => CartComponent.InProgress;
+  localCartProgress = () => this.cartservice.isLoding();
 
   constructor(
     private productservice: ProductService,
     private cartservice: CartService,
     private categoryservice: CategoryService
-  ) {}
+  ) { }
 
   categories: any;
   products: any[] = [];
-  productflag = true;
   TotalPages: number = 1;
   CartProduct: any[] = [];
 
@@ -38,111 +35,65 @@ export class HomeComponent implements OnDestroy {
 
   static FireOnce: boolean = true;
   ngOnInit() {
-    if (HomeComponent.FireOnce) {
-      this.productservice.getProducts(true);
-      HomeComponent.FireOnce = false;
-    }
+    this.GetProducts(5, HomeComponent.FireOnce);
     this.productservice.limit = 30;
     this.productservice.page = 1;
     this.productservice.sort = 'Recommended';
     this.GetCategories();
-    this.GetProducts(5);
   }
 
 
-  GetProducts(id:any): void {
+  GetProducts(id: any, isok: boolean): void {
 
-    if (HomeComponent.InProgress) return;
-    HomeComponent.InProgress = true;
+    if (this.productservice.Lodingproduct) return;
+    this.productservice.Lodingproduct = true;
 
     this.categoryservice.GetCategories();
-    this.productservice.getProducts(true);
-    
+    this.productservice.getProducts(isok);
+
     this.cartservice.cartData$.subscribe((cartData) => {
       this.productservice.productsData$.subscribe((productsData) => {
         this.products?.forEach((product: any) => {
           let exists = cartData.some((item) => item.Product._id === product._id);
           product.incart = exists;
-          console.log(productsData)
         });
         this.products = productsData;
       });
-      this.productservice.TotalPagesData$.subscribe((total)=> this.TotalPages = total)
-      HomeComponent.InProgress = false;
+      this.productservice.TotalPagesData$.subscribe((total) => this.TotalPages = total)
     });
   }
 
-  AddToCart(p: any) {
-    if (CartComponent.InProgress) return;
-    
-    if (this.IsLogged()) {
-      CartComponent.InProgress = true;
-      p.incart = !p.incart;
-      this.cartservice.addToCart({
-        Product: p,
-        Quantity: this.productSelectedPrice[p._id] | 1,
-      });
-    } else {
-      /* Go To Login */
-      alert("Login first to perform this action")
-    }
-  }
-
-  RemoveFromCart(p: any) {
-    if (CartComponent.InProgress) return;
-    CartComponent.InProgress = true;
-    p.incart = !p.incart;
-    this.cartservice.removefromcart(p._id);
-  }
-
   GetCategories() {
-    this.categorySubscription = this.categoryservice
-      .GetCategories()
-      .subscribe((categoryData: any) => {
-        this.categories = categoryData;
-      });
-  }
-
-  OnproductQuantitychange(event: any, productId: string): void {
-    let selectedValue = event.target.value;
-    this.productSelectedPrice[productId] = selectedValue;
-    this.GetProducts(5)
-  }
-
-  isproductinCart(ssss: boolean): boolean {
-    return ssss;
+    this.categorySubscription = this.categoryservice.GetCategories()
+      .subscribe((categoryData: any) => this.categories = categoryData);
   }
 
   ngOnDestroy(): void {
     this.categorySubscription?.unsubscribe();
     this.cartSubscription?.unsubscribe();
+    this.productsSubscription?.unsubscribe();
+
+    this.productservice.limit = 30;
+    this.productservice.page = 1;
+    this.productservice.sort = 'Recommended';
   }
 
-  refreshProducts() {
-    this.productservice.limit = this.limit;
-    this.productservice.page = this.page;
-    this.productservice.sort = this.sort;
-    this.productservice.getProducts(true);
+  itemsPerSlide: number = this.calculateItemsPerSlide();
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.itemsPerSlide = this.calculateItemsPerSlide();
   }
 
-  GotoPage(Pnum: number): void {
-    console.log(Pnum)
-    if (Pnum <= this.TotalPages && Pnum > 0) {
-      this.page = Pnum;
-    } else if (Pnum >= this.TotalPages) {
-      this.page = this.TotalPages;
-    } else {
-      this.page = 1;
-    }
-    this.GetProducts(4);
+  calculateItemsPerSlide(): any {
+    const breakpoints = { 522: 2, 700: 3, 900: 4, 1207: 5, 1400: 6, 2000: 7 };
+    const screenWidth = window.innerWidth;
+    return Object.values(breakpoints).find((value, index, array) => screenWidth < +Object.keys(breakpoints)[index] || index === array?.length - 1);
   }
 
-  public createRange(number: number): number[] {
-    return new Array(number).fill(0).map((n, index) => index + 1);
-  }
-
-  /* Temperory till user service is implemented */
-  public IsLogged(): boolean {
-    return localStorage.getItem('jwt') ? true : false;
+  chunks(arr: any[], size: number): any[][] {
+    return Array.from({ length: Math.ceil(arr?.length / size) }, (_, i) =>
+      arr?.slice(i * size, i * size + size)
+    );
   }
 }

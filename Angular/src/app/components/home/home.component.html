@@ -1,6 +1,4 @@
-<div class="container-fluid w-75">
-
-  <ng-container *ngIf="localCartProgress()"><app-loding></app-loding></ng-container>
+<div class="container-lg .container-sm .container-md .container-xl .container-xxl">
 
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2500">
     <div class="carousel-indicators">
@@ -11,15 +9,16 @@
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
         aria-label="Slide 3"></button>
     </div>
+
     <div class="carousel-inner CarouselHight">
       <div class="carousel-item active">
-        <img src="../../../assets/images/Main Banner/Tv.png" class="d-block w-100" alt="...">
+        <img style="cursor: pointer;" src="../../../assets/images/Main Banner/Tv.png" routerLink="/category/65dce6bb7a9764adb57ac0e3" class="d-block w-100" alt="...">
       </div>
       <div class="carousel-item">
-        <img src="../../../assets/images/Main Banner/Mobile.png" class="d-block w-100" alt="...">
+        <img style="cursor: pointer;" src="../../../assets/images/Main Banner/Mobile.png" routerLink="/category/65fa1794a11d171c7487bf64" class="d-block w-100" alt="...">
       </div>
       <div class="carousel-item">
-        <img src="../../../assets/images/Main Banner/Speakers.jpg" class="d-block w-100" alt="...">
+        <img style="cursor: pointer;" src="../../../assets/images/Main Banner/Speakers.jpg" routerLink="/category/65dce97c7a9764adb57ac0ed" class="d-block w-100" alt="...">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -34,22 +33,32 @@
     </button>
   </div>
 
-  <div class="d-flex CategoriesDiv pt-2 pb-1">
+    
+  <div id="custom-slider" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item" *ngFor="let chunk of chunks(categories, itemsPerSlide); let i = index" [ngClass]="{ 'active': i === 0 }">
+        <div class="row my-3">
 
-    <ng-container *ngFor="let category of categories">
-      <div class=" object-fit border-0 rounded-circle " style="width: 13rem;">
-        <div class="ImageHolder mx-auto">
-          <img style="cursor:pointer;" class="p-2" [routerLink]="'category/'+category._id"
-            src={{category.CategoryImage}} alt="...">
+          <div class="col" *ngFor="let category of chunk">
+            <div class="item object-fit border-0 rounded-circle" style="width: 9rem;">
+              <div class="ImageHolder mx-auto">
+                <img style="cursor:pointer;" class="p-2" [routerLink]="'category/'+category._id"src={{category.CategoryImage}} alt="...">
+              </div>
+              <div class="categoryTitle text-white text-center mt-2 w-75 mx-auto" [routerLink]="'category/'+category._id"style="cursor:pointer;">{{category.CategoryName}}</div>
+
         </div>
-        <div class="categoryTitle text-white text-center mt-2 w-75 mx-auto" [routerLink]="'category/'+category._id"
-          style="cursor:pointer;">{{category.CategoryName}}</div>
       </div>
-    </ng-container>
-
+    </div>
+    <button class="carousel-control-prev btnslidercusotm my-auto" type="button" data-bs-target="#custom-slider" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next btnslidercusotm my-auto" type="button" data-bs-target="#custom-slider" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
+
 </div>
 
-
-
-<app-product-item [products]="products" [TotalPages]="TotalPages" (RefreshProducts)="GetProducts($event)"></app-product-item>
+<app-product-item [products]="products" [TotalPages]="TotalPages" (RefreshProducts)="GetProducts($event,true)"></app-product-item>

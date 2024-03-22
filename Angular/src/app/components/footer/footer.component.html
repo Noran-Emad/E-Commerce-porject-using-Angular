@@ -1,3 +1,9 @@
-<footer>
-
+<footer class="d-flex flex-column">
+    <p class="p-1 mx-auto text-center w-100 text-white topfooter" >&copy; 2024 ITI Project. All rights reserved.</p>
+    <div class="p-1 mx-auto w-100 px-5">
+        <div class="text-start fw-bold">Categories</div>
+        <ng-container *ngFor="let category of categories">
+            <div class="text-start">{{category.CategoryName}}</div>
+        </ng-container>
+    </div>
 </footer>

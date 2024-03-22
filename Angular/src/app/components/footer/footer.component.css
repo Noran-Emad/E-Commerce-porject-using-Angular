@@ -1,11 +1,8 @@
 footer{
-  background-color: rebeccapurple;
-  min-height: 20rem;
-  background-color: #8BC6EC;
-background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
-background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
-background-image: linear-gradient( 76.3deg,  rgba(44,62,78,1) 12.6%, rgba(69,103,131,1) 82.8% );
+min-height: 20rem;
 background-image: linear-gradient(250deg, #a7a6cb 0%, #8989ba 52%, #8989ba 100%);
-background-image: linear-gradient(250deg, #a7a6cb 0%, #8989ba 52%, #8989ba 100%);
+}
 
+.topfooter{
+    background-image: linear-gradient(62deg, #44385c 0%, #463b4f 100%);
 }

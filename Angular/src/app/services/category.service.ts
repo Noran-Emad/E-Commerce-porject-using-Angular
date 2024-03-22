@@ -7,9 +7,9 @@ import { Observable, of, tap } from 'rxjs';
 })
 export class CategoryService {
 
-  headers = new HttpHeaders({'jwt': `${localStorage.getItem('jwt')}`});
-  constructor(private http: HttpClient) {}
-  categories:any;
+  headers = new HttpHeaders({ 'jwt': `${localStorage.getItem('jwt')}` });
+  constructor(private http: HttpClient) { }
+  categories: any;
 
   GetCategories(): Observable<any> {
     let CategoryURL = 'http://localhost:3000/api/category';

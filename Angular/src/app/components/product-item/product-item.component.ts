@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CartComponent } from '../cart/cart.component';
-import { HomeComponent } from '../home/home.component';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
@@ -25,14 +23,13 @@ export class ProductItemComponent {
   categorySubscription?: Subscription;
   productsSubscription?: Subscription;
 
-  localCartProgress = () => CartComponent.InProgress;
+  localCartProgress = () => this.cartservice.Lodingcart;
 
   constructor(
     private productservice: ProductService,
     private cartservice: CartService,
     private categoryservice: CategoryService,
     private rout: ActivatedRoute,
-
   ) { }
 
   categories: any;
@@ -47,22 +44,33 @@ export class ProductItemComponent {
 
   static FireOnce: boolean = true;
   ngOnInit() {
+    this.productservice.limit = 30;
+    this.productservice.page = 1;
+    this.productservice.sort = 'Recommended';
     this.RenderGetProducts();
   }
 
-
   RenderGetProducts(): void {
     const categoryId = this.rout.snapshot.paramMap.get('id');
+
+    /* if the limit change make the page to 1 because it will skip products with diffrent limit */
+    if (this.productservice.limit !== this.limit) {
+      this.productservice.page = 1;
+      this.page = 1;
+    } else {
+      this.productservice.page = this.page;
+    }
+
     this.productservice.limit = this.limit;
-    this.productservice.page = this.page;
     this.productservice.sort = this.sort;
+
     this.CheckProductsifinCart(this.products);
     this.RefreshProducts.emit(categoryId);
   }
 
+  /* if the products in the cart adjust the ui red/green */
   CheckProductsifinCart(products: any[]): void {
-    this.cartservice.GetCart();
-    this.cartservice.cartData$.subscribe((cart) =>{
+    this.cartservice.cartData$.subscribe((cart) => {
 
       products?.forEach((product: any) => {
         let exists = cart.some((item) => item.Product._id === product._id);
@@ -73,13 +81,13 @@ export class ProductItemComponent {
   }
 
   AddToCart(p: any) {
-    if (CartComponent.InProgress) return;
+    if (this.cartservice.Lodingcart) return;
     if (this.IsLogged()) {
-      CartComponent.InProgress = true;
+      this.cartservice.Lodingcart = true;
       p.incart = !p.incart;
       this.cartservice.addToCart({
         Product: p,
-        Quantity: this.productSelectedPrice[p._id] | 1,
+        Quantity: this.productSelectedPrice[p._id] || 1,
       });
     } else {
       /* Go To Login */
@@ -88,18 +96,15 @@ export class ProductItemComponent {
   }
 
   RemoveFromCart(p: any) {
-    if (CartComponent.InProgress) return;
-    CartComponent.InProgress = true;
+    if (this.cartservice.Lodingcart) return;
+    this.cartservice.Lodingcart = true;
     p.incart = !p.incart;
     this.cartservice.removefromcart(p._id);
   }
 
   GetCategories() {
-    this.categorySubscription = this.categoryservice
-      .GetCategories()
-      .subscribe((categoryData: any) => {
-        this.categories = categoryData;
-      });
+    this.categorySubscription = this.categoryservice.GetCategories()
+      .subscribe((categoryData: any) => this.categories = categoryData);
   }
 
   OnproductQuantitychange(event: any, productId: string): void {
@@ -108,9 +113,7 @@ export class ProductItemComponent {
     this.GetProducts()
   }
 
-  isproductinCart(ssss: boolean): boolean {
-    return ssss;
-  }
+  isproductinCart = (ssss: boolean): boolean => ssss;
 
   ngOnDestroy(): void {
     this.categorySubscription?.unsubscribe();
@@ -136,10 +139,7 @@ export class ProductItemComponent {
 
   /* Temperory till user service is implemented */
   public IsLogged(): boolean {
-    return localStorage.getItem('jwt')!= null;
+    return localStorage.getItem('jwt') != null;
   }
-
-
-
 
 }

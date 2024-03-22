@@ -1,97 +1,91 @@
-
-
-<ng-container *ngIf="localCartProgress()"><app-loding></app-loding></ng-container>
-
-
-
-
 <h3 class=" my-5 w-content text-center">Your Shopping Cart {{CartProduct.length === 0?'is Empty':null}}</h3>
 <div class="container">
   <div class="row" style="align-items: center">
 
     <div *ngIf="CartProduct.length === 0 else CartNotEmpty" class="w-100 d-flex justify-content-center mt-3">
-      <img class="w-50 " src="../../../assets/images/emptycart.png">
+      <div class="d-flex flex-column">
+
+        <button routerLink="" class="btn mb-5 w-25 mx-auto text-white" style="background-color: rgb(202, 71, 71);">Shop
+          Now</button>
+        <div class="d-flex justify-content-center"><img class="w-50 " src="../../../assets/images/emptycart.png"></div>
+      </div>
     </div>
-    
+
     <ng-template #CartNotEmpty>
 
       <div class="col-8 ">
-      <ng-container *ngFor="let product of CartProduct">
-        
-        <div class="container-fluid w-100 bg-white my-2">
-          <div class="row cart-card-size-custom">
-            <div class="col-3 cartimg" routerLink="products/{{product.Product._id}}"><img
-                src={{product.Product.productImage}}></div>
-                <div class="col-9  d-flex flex-column justify-content-center">
-                  <h5 routerLink="products/{{product.Product._id}}" style="word-wrap: break-word;" class="">
-                {{product.Product.ProductName}}</h5>
-              <p class="text-truncate" style="word-wrap: break-word;">{{product.Product.productDescription}}</p>
-              
-              <ng-container *ngIf="!(product.Product.Discount > 0) else HaveDiscount">
-                <div>
-                  <span class="h4">{{product.Product.productPrice | number}}</span>
-                  <span> EGP</span>
-                </div>
-              </ng-container>
-              
-              <ng-template #HaveDiscount>
-                <div>
-                  <span class="h4">{{ (product.Product.productPrice - (product.Product.productPrice *
-                    (product.Product.Discount / 100))) | number }}</span>
-                  <span> EGP</span>
-                  
-                  <div style="font-size: 0.8rem;">
-                    <span class="text-decoration-line-through text-muted">{{product.Product.productPrice |
-                      number}}</span>
-                    <span class="DiscountText" style="font-size: 0.7rem;"> {{ product.Product.Discount }}% OFF</span>
+        <ng-container *ngFor="let product of CartProduct">
+
+          <div class="container-fluid w-100 bg-white my-2">
+            <div class="row cart-card-size-custom">
+              <div class="col-3 cartimg" routerLink="products/{{product.Product._id}}"><img
+                  src={{product.Product.productImage}}></div>
+              <div class="col-9  d-flex flex-column justify-content-center">
+                <h5 routerLink="products/{{product.Product._id}}" style="word-wrap: break-word;" class="">
+                  {{product.Product.ProductName}}</h5>
+                <p class="text-truncate" style="word-wrap: break-word;">{{product.Product.productDescription}}</p>
+
+                <ng-container *ngIf="!(product.Product.Discount > 0) else HaveDiscount">
+                  <div>
+                    <span class="h4">{{product.Product.productPrice | number}}</span>
+                    <span> EGP</span>
+                  </div>
+                </ng-container>
+
+                <ng-template #HaveDiscount>
+                  <div>
+                    <span class="h4">{{ (product.Product.productPrice - (product.Product.productPrice *
+                      (product.Product.Discount / 100))) | number }}</span>
+                    <span> EGP</span>
+
+                    <div style="font-size: 0.8rem;">
+                      <span class="text-decoration-line-through text-muted">{{product.Product.productPrice |
+                        number}}</span>
+                      <span class="DiscountText" style="font-size: 0.7rem;"> {{ product.Product.Discount }}% OFF</span>
+                    </div>
+                  </div>
+                </ng-template>
+
+
+
+                <div class="d-flex justify-content-between">
+                  <select [disabled]="localCartProgress()" [(ngModel)]="product.Quantity"
+                    (change)="UpdateQuantity($event,product.Product._id)" class="py-1 w-25 mt-2">
+                    <ng-container *ngFor="let item of createRange(product.Product.productQuantity)">
+                      <option>{{item}}</option>
+                    </ng-container>
+                  </select>
+
+
+                  <div class="btn bg-danger w-content text-white" (click)="RemoveProduct(product.Product._id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                      <path
+                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                    </svg>
                   </div>
                 </div>
-              </ng-template>
-              
-              
-              
-              <div class="d-flex justify-content-between">
-                <!-- <label class="mx-2">Qty</label> -->
-                <select [disabled]="PhInProgress" [(ngModel)]="product.Quantity"
-                  (change)="UpdateQuantity($event,product.Product._id)" class="py-1 w-25 mt-2">
-                  <ng-container *ngFor="let item of createRange(product.Product.productQuantity)">
-                    <option>{{item}}</option>
-                  </ng-container>
-                </select>
-                
-                
-                <div class="btn bg-danger w-content text-white" (click)="RemoveProduct(product.Product._id)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                  <path
-                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
-                </svg>
-                </div>
-              </div>
 
+              </div>
             </div>
           </div>
+
+        </ng-container>
+      </div>
+
+
+      <div class="card text-center col-4 p-0 ">
+        <h5 class="card-title pt-5 pb-4 ">Order Summary</h5>
+        <hr>
+        <div class="card-body">
+          <h5 class="card-title pt-5">Total Price</h5>
+          <h4 class="card-title pt-3 pb-5">{{TotalPrice | currency:'EGP'}}</h4>
         </div>
-
-      </ng-container>
-    </div>
-    
-
-    <div class="card text-center col-4 p-0 ">
-      <h5 class="card-title pt-5 pb-4 ">Order Summary</h5>
-      <hr>
-      <div class="card-body">
-        <h5 class="card-title pt-5">Total Price</h5>
-        <h4 class="card-title pt-3 pb-5">{{TotalPrice | currency:'EGP'}}</h4>
+        <div class="card-footer text-muted bg-gridant">
+          <button (click)="PlaceOrder()" class="btn text-white w-100 p-2">place Order</button>
+        </div>
       </div>
-      <div class="card-footer text-muted bg-gridant">
-        <button (click)="PlaceOrder()" class="btn text-white w-100 p-2">place Order</button>
-      </div>
-    </div>
-  </ng-template>
+    </ng-template>
 
-
-    
   </div>
-  
 </div>

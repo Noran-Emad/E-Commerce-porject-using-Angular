@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
-import { HomeComponent } from '../components/home/home.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+
+  Lodingproduct: boolean = false;
 
   page: number = 1;
   limit: number = 30;
@@ -27,51 +28,48 @@ export class ProductService {
   CategoryProductData$: Observable<any> = this.CategoryProductDataSubject.asObservable();
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getProducts(isok:boolean): void {
-    // if (isok) {
+  getProducts(isok: boolean): void {
+    if (isok) {
       const ProductsURL = `http://localhost:3000/api/Products?limit=${this.limit}&page=${this.page}&sort=${this.sort}`;
       this.http.get<any[]>(ProductsURL).subscribe(
-        (productsData:any) => {
+        (productsData: any) => {
           this.productsDataSubject.next(productsData.Products);
           this.TotalPagesDataSubject.next(productsData.TotalPages);
-          HomeComponent.InProgress = false;
+          this.Lodingproduct = false;
         },
         (error) => {
           console.error('Error fetching product data:', error);
         }
       );
-    // }
+    }
   }
 
 
-GetaProduct(id:string){
+  GetaProduct(id: string) {
     const ProductURL = `http://localhost:3000/api/Products/${id}`;
     this.http.get<any>(ProductURL).subscribe(
-      (productData:any) => {
+      (productData: any) => {
         this.aproductDataSubject.next(productData);
-        HomeComponent.InProgress = false;
+        this.Lodingproduct = false;
       },
       (error) => {
         console.error('Error fetching product data:', error);
       }
     );
-}
+  }
 
-
-GetCategpryProducts(id:any): void{
-  console.log('id in service GetCategpryProducts',id)
-  let ProductsURL = `http://localhost:3000/api/Category/${id}?limit=${+this.limit}&page=${this.page}&sort=${this.sort}`;
-  this.http.get<any[]>(ProductsURL).subscribe((productsData:any) => {
-    this.CategoryProductDataSubject.next(productsData);
-    HomeComponent.InProgress = false;
+  GetCategpryProducts(id: any): void {
+    let ProductsURL = `http://localhost:3000/api/Category/${id}?limit=${+this.limit}&page=${this.page}&sort=${this.sort}`;
+    this.http.get<any[]>(ProductsURL).subscribe((productsData: any) => {
+      this.CategoryProductDataSubject.next(productsData);
+      this.Lodingproduct = false;
     },
-    (error) => {
-      console.error('Error fetching product data:', error);
-    }
-  );
-}
-
+      (error) => {
+        console.error('Error fetching product data:', error);
+      }
+    );
+  }
 
 }

@@ -8,7 +8,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end my-nav-items">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end "
+        [ngClass]="isSmallScreen ? 'my-nav-items' : 'itemsNot'">
 
         <li class="nav-item mx-1 my-0 roundedcustom-circle">
           <a class="nav-link text-dark" aria-current="page" routerLink="">Home</a>
@@ -30,6 +31,18 @@
             </a>
           </li>
         </ng-template>
+
+        <li class="nav-item roundedcustom-circle cartnavitem mx-1">
+          <ng-container *ngIf="isuserLogged() else Unauthcartbtn">
+            <a routerLink="orders"><span class="d-inline-block px-1 text-dark">Orders</span> </a>
+          </ng-container>
+
+          <ng-template #Unauthcartbtn>
+            <a style="cursor: pointer;" (click)="myalert()">
+              <span class="d-inline-block px-1 text-dark">Orders</span></a>
+          </ng-template>
+
+        </li>
 
       </ul>
     </div>
