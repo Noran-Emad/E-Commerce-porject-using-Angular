@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { CartComponent } from '../components/cart/cart.component';
+import { ErrorComponent } from '../components/error/error.component';
+import { TempAuthService } from './temp-auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,61 +17,119 @@ export class CartService {
 
   public Lodingcart: boolean = false;
 
-  constructor(private http: HttpClient) { }
+  public static disablecart: boolean = false;
+
+  constructor(private http: HttpClient,private auth:TempAuthService) { }
+
+
 
   GetCart(): void {
-    const cartURL = 'http://localhost:3000/api/cart/';
-    this.http.get<any[]>(cartURL, { headers: this.headers }).subscribe(
-      (cartData: any) => {
+    /* if the user logged get the cart from the backend */
+    if(this.auth.IsLogged()){
+      
+      const cartURL = 'http://localhost:3000/api/cart/';
+      this.http.get<any[]>(cartURL, { headers: this.headers }).subscribe((cartData: any) => {
         this.cartDataSubject.next(cartData?.CartProducts ?? []);
         this.Lodingcart = false;
       },
       (error) => {
-        console.error('Error fetching cart data:', error);
+        ErrorComponent.ShowMessage(error.error)
+      });
+    }else{
+        /* if the user is guest get the cart from the local storage */
+        let tempcart = localStorage.getItem('tempcart')?? '[]';
+        this.cartDataSubject.next(JSON.parse(tempcart));
+        this.Lodingcart = false;
       }
-    );
   }
+
 
   addToCart(item: any): void {
-    let currentCartData = this.cartDataSubject.getValue();
-    this.http.post('http://localhost:3000/api/cart/add',
-      { Product: item.Product._id, Quantity: item.Quantity | 1 },
-      { headers: this.headers }).subscribe(() => {
-        currentCartData.push(item);
-        this.cartDataSubject.next(currentCartData);
-        this.Lodingcart = false;
 
+    /* add item to the cart whether if user logged in or not */
+    let currentCartData = this.cartDataSubject.getValue();
+    let updatedcart = [...currentCartData, item]
+    this.cartDataSubject.next(updatedcart);
+    if(this.auth.IsLogged()){
+
+      /* if logged add it by api */
+      this.http.post('http://localhost:3000/api/cart/add',
+      { Product: item.Product._id, Quantity: item.Quantity || 1 },
+      { headers: this.headers }).subscribe(() =>{
+        this.cartDataSubject.next(updatedcart)
+        CartService.disablecart = false;
+      },
+      (error) => {
+        ErrorComponent.ShowMessage(error.error)
+        CartService.disablecart = false;
+        this.cartDataSubject.next(currentCartData);
       });
+    }else{
+      /* if not logged just update the temp cart in the local storage */
+      localStorage.setItem('tempcart',JSON.stringify(this.cartDataSubject.getValue()))
+      CartService.disablecart = false;
+    }
   }
+
 
   async removefromcart(id: string) {
-    let RemoveFromcartURL = `http://localhost:3000/api/Cart/remove/${id}`;
-    this.http.delete(RemoveFromcartURL, { headers: this.headers }).subscribe(() => {
-      let currentCartData = this.cartDataSubject.getValue();
-      let updated = currentCartData.filter((item) => item.Product._id !== id);
-      this.cartDataSubject.next(updated);
-      this.Lodingcart = false;
-
-    });
-  }
-
-  updateQtycart(newQty: number, pid: string) {
-    const headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
+    /* remove the product from the cart whether if user logged in or not */
     let currentCartData = this.cartDataSubject.getValue();
-    let UpdateProduct = `http://localhost:3000/api/cart/update/${pid}`;
+    let updated = currentCartData.filter((item) => item.Product._id !== id);
+    this.cartDataSubject.next(updated);
 
-    this.http.patch(UpdateProduct, { Quantity: newQty }, { headers }).subscribe(() => {
-      currentCartData.forEach((item) => {
-        if (item.Product._id === pid)
-          item.Quantity = newQty;
+    if(this.auth.IsLogged()){
+      /* if logged remove it by api */
+      let RemoveFromcartURL = `http://localhost:3000/api/Cart/remove/${id}`;
+      this.http.delete(RemoveFromcartURL, { headers: this.headers }).subscribe(() => {
+        CartService.disablecart = false;
+      },
+      (error) => {
+        ErrorComponent.ShowMessage(error.error)
         this.cartDataSubject.next(currentCartData);
+        CartService.disablecart = false;
       });
-      this.Lodingcart = false;
-
-    });
+    }else{
+      /* if not logged just update the temp cart in the local storage */
+      localStorage.setItem('tempcart',JSON.stringify(this.cartDataSubject.getValue()))
+      CartService.disablecart = false;
+    }
   }
+  
+  updateQtycart(newQty: number, pid: string) {
+    /* update the product qty in the cart whether if user logged in or not */
+    let currentCartData = this.cartDataSubject.getValue();
+    let oldcart = this.cartDataSubject.getValue();
+    
+    currentCartData.forEach((item) => {
+      if (item.Product._id === pid)
+        item.Quantity = newQty;
+      this.cartDataSubject.next(currentCartData);
+    });
+    
+
+    if(this.auth.IsLogged()){
+      /* if logged update the cart by api */
+      let UpdateProduct = `http://localhost:3000/api/cart/update/${pid}`;
+      this.http.patch(UpdateProduct, { Quantity: newQty }, { headers:this.headers }).subscribe(() => {
+        CartService.disablecart = false;
+      },
+      (error) => {
+        ErrorComponent.ShowMessage(error.error)
+        
+        this.cartDataSubject.next(oldcart);
+        CartService.disablecart = false;
+      });
+    }else{
+      /* if not logged just update the temp cart in the local storage */
+      localStorage.setItem('tempcart',JSON.stringify(this.cartDataSubject.getValue()))
+      CartService.disablecart = false;
+    }
+  }
+
 
   isLoding(): boolean {
     return this.Lodingcart;
   }
+
 }

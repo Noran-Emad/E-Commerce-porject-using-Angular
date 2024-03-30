@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DOCUMENT } from '@angular/common';
+import { ReviewService } from '../../services/review.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-products',
@@ -13,74 +13,136 @@ import { DOCUMENT } from '@angular/common';
 
 export class ProductsComponent implements OnInit {
 
-  constructor(private productservice: ProductService, private cartservice: CartService, private route: ActivatedRoute, private http: HttpClient, @Inject(DOCUMENT) private document: Document, private router: Router) {
-    this.router.events.subscribe((even: any) => {
-      if (even instanceof NavigationEnd) {
-        this.scrollToTop();
-      }
-    });
+  constructor(private formbuilder: FormBuilder, private productservice: ProductService, private reviewsservice: ReviewService, private cartservice: CartService, private route: ActivatedRoute, private router: Router) {
   }
 
-  private scrollToTop(): void {
-    this.document.body.scrollTop = 0;
-    this.document.documentElement.scrollTop = 0;
-  }
+  localProductProgress = () => this.productservice.Lodingproduct;
+  localReviewProgress = () => this.reviewsservice.Lodingreview;
+
+
+  myForm: FormGroup = this.formbuilder.group({
+    title: ['', Validators.required],
+  });;
 
   id = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
   product: any;
   reviews: any;
   AvgRate: number = 0;
   outQuantity: any = 1;
+  isUserReviewd: any = null;
+  
+  TotalPages: number = 1;
+  page: number = 1;
 
+
+  ReviewTitle: string = '';
+  stars: number[] = this.createRange(5);
+  selectedStarIndex: number = 2;
+  selectedValue: number = 3;
+  
   isProductinCart: boolean = false;
-
+  disablecart = (): boolean => CartService.disablecart;
+  
   inQuantity: any;
 
-  ngOnInit() {
-    this.GetProduct()
-  }
+ ngOnInit() {
+   this.GetProduct()
+   window.scrollTo({top: 0,behavior: 'instant'})
+}
 
   GetProduct() {
     if (this.productservice.Lodingproduct) return;
     this.productservice.Lodingproduct = true;
-    this.productservice.GetaProduct(this.id);
-    this.cartservice.cartData$.subscribe((cartData: any[]) => {
+    let isReviewCalled = true;
 
-      this.productservice?.aproductData$.subscribe((product) => {
-        this.product = product?.product;
-        this.reviews = product?.reviews;
-        this.CalcAvgRate(product?.reviews)
-        let exiest = cartData.filter(e => e.Product?._id === this.product?._id)[0];
-        this.inQuantity = exiest?.Quantity;
-        exiest ? this.isProductinCart = true : null
-      })
+    this.selectedValue = 3;
+    this.selectedStarIndex = 2;
+    this.ReviewTitle = '';
+
+    this.id && this.productservice.GetaProduct(this.id);
+    /* Get The Product */
+    this.productservice?.aproductData$.subscribe((product) => {
+      this.product = product;
+      this.AvgRate = product?.rate
+
+      /* Get Reviews only one time if the rev subject is null */
+      if (isReviewCalled)
+      this.getReviws(this.page)
+      isReviewCalled = false;
+
+      /* check if product in cart */
+      this.cartservice.cartData$.subscribe((cartData: any[]) => {
+        this.IfThisProductInCart(cartData, product?._id);
+       })
     })
-
   }
 
-  CalcAvgRate(revs: any[]) {
-    let totalrate = 0;
-    revs?.forEach((rev) => {
-      totalrate += +rev?.Rating;
-    })
-    this.AvgRate = (+totalrate / +revs?.length);
+
+  getReviws(page: number) {
+    this.reviewsservice.Lodingreview = true;
+    this.reviewsservice.GetProductReviews(this.id, page);
+    this.page = page || 1;
+    this.reviewsservice.productreviewsdata$.subscribe((reviws) => this.AssignLocalReviews(reviws))
   }
+
+
+  SubmitReview = () => {
+  if (!this.myForm.controls['title'].valid) return;
+  this.reviewsservice.Lodingreview = false;
+  this.reviewsservice.SubmitReview(this.selectedValue, this.ReviewTitle, this.id);
+  this.page = 1;
+}
+
+DeleteReview(productid: string) {
+  this.reviewsservice.Lodingreview = false;
+  this.reviewsservice.DeleteReview(productid);
+  this.page = 1;
+  this.isUserReviewd= null;
+  }
+
+
+  /* assign the total pages and reviews and if this user has aleady a review before */
+  AssignLocalReviews(reviws: any) {
+    this.reviews = reviws?.reviews;
+    this.isUserReviewd = reviws?.UserReviewexiest?.[0];
+    this.TotalPages = reviws?.totalPages;
+
+    this.reviews?.forEach((rev: any) => rev.userreviwed = reviws?.UserReviewexiest[0]?._id === rev?._id);
+
+    this.ReviewTitle = reviws?.UserReviewexiest[0]?.Title
+    this.selectedValue = reviws?.UserReviewexiest[0]?.Rating
+    this.selectedStarIndex = reviws?.UserReviewexiest[0]?.Rating - 1
+  }
+
+
+  /* if this product is in your cart adjust the quantity and add/remove button */
+  IfThisProductInCart(cart: any, prodid: string) {
+    let exiest = cart.filter((e: any) => e.Product?._id === prodid)[0];
+    this.inQuantity = exiest?.Quantity;
+    this.isProductinCart = exiest ?  true:false;
+  }
+
+
+  GotoPage(Pnum: number): void {
+    if (Pnum <= this.TotalPages && Pnum > 0) {
+      this.page = Pnum;
+    } else if (Pnum >= this.TotalPages) {
+      this.page = this.TotalPages;
+    } else {
+      this.page = 1;
+    }
+    this.getReviws(this.page);
+  }
+
 
   AddToCart(p: any) {
-    if (!localStorage.getItem('jwt')) {
-      alert('You need to login first')
-    } else {
-
-      if (this.cartservice.isLoding()) return;
-      this.cartservice.Lodingcart = true;
+      CartService.disablecart = true;
       p.incart = !p.incart;
       this.cartservice.addToCart({ Product: p, Quantity: this.outQuantity || 1 })
       this.isProductinCart = true;
-    }
   }
   RemoveFromCart(p: any) {
-    if (this.cartservice.isLoding()) return;
-    this.cartservice.Lodingcart = true;
+    CartService.disablecart = true;
     p.incart = !p.incart;
     this.cartservice.removefromcart(p._id);
     this.isProductinCart = false;
@@ -91,8 +153,7 @@ export class ProductsComponent implements OnInit {
   }
 
   UpdateQuantity(event: any, id: string) {
-    if (this.cartservice.isLoding()) return;
-    this.cartservice.Lodingcart = true;
+    CartService.disablecart = true;
     let selectedValue = event.target.value;
     this.cartservice.updateQtycart(selectedValue, id);
   }
@@ -101,10 +162,6 @@ export class ProductsComponent implements OnInit {
     return new Array(number).fill(0).map((n, index) => index + 1);
   }
 
-  ReviewTitle: string = '';
-  stars: number[] = [1, 2, 3, 4, 5];
-  selectedStarIndex: number = 2;
-  selectedValue: number = 3;
 
   highlightStars(index: number): void {
     if (this.selectedStarIndex !== -1) {
@@ -116,27 +173,5 @@ export class ProductsComponent implements OnInit {
   selectStar(index: number): void {
     this.selectedStarIndex = index;
     this.selectedValue = index + 1;
-  }
-
-  SubmitReview() {
-
-    if (this.IsLogged()) {
-      let AddReviewURL = `http://localhost:3000/api/Review/reviews/${this.id}`
-      let AddRateURL = `http://localhost:3000/api/Review/ratings/${this.id}`
-      let headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
-
-      if (this.ReviewTitle.trim() === '') return alert('Review cant be empty');
-      this.http.post(AddRateURL, { "Rating": this.selectedValue }, { headers: headers }).subscribe(() => {
-        this.selectedValue = 3;
-        this.selectedStarIndex = 2;
-        this.GetProduct();
-        this.http.post(AddReviewURL, { "Title": this.ReviewTitle }, { headers: headers }).subscribe(() => {
-          this.ReviewTitle = '';
-          this.GetProduct();
-        });
-      });
-    } else {
-      alert('You need to login first')
-    }
   }
 }

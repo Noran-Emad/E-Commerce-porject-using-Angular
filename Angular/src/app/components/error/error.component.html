@@ -1,0 +1,14 @@
+<div class="ErrorMessage text-white"  [style.display]="!LocalShow() ? 'none' : 'block'">
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="alert p-4 col-12 col-lg-8 col-md-10 col-xl-6 myalert mx-auto" role="alert">
+                <h4 class="alert-heading">Error!</h4>
+                <p class="my-5 text-center h4">{{LocalMessage()}}</p>
+                <hr>
+                <div class="d-flex justfiy-content-center">
+                    <button class="btn mybtn text-white mx-auto w-100" (click)="LocalHideFunc()">ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

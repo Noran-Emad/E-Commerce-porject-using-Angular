@@ -12,19 +12,18 @@ import { DOCUMENT } from '@angular/common';
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
-  constructor(private route: ActivatedRoute, private productService: ProductService, private router: Router, private cartservice: CartService, @Inject(DOCUMENT) private document: Document) {
-    this.router.events.subscribe((even: any) => {
-      if (event instanceof NavigationEnd) {
-        this.scrollToTop();
-        this.GetProducts(this.categoryId)
-      }
-    });
+  constructor(private route: ActivatedRoute, private productService: ProductService, private cartservice: CartService, @Inject(DOCUMENT) private document: Document) {
+    window.scrollTo({top: 0,behavior: 'instant'})
   }
 
   categoryId: any;
   category: any;
   products: any;
   TotalPages: number = 1;
+  
+  page: number = this.productService.page;
+  limit: number = this.productService.limit;
+  sort: string = this.productService.sort;
 
   cartSubscription?: Subscription;
   productsSubscription?: Subscription;
@@ -58,10 +57,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     })
   }
   
-  private scrollToTop(): void {
-    this.document.body.scrollTop = 0; // For Safari
-    this.document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
-  }
+
 
   ngOnDestroy(): void {
     this.productService.limit = 30;

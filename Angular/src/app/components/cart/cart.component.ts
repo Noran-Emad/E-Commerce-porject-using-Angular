@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ErrorComponent } from '../error/error.component';
+import { TempAuthService } from '../../services/temp-auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,8 +13,9 @@ export class CartComponent implements OnInit {
   CartProduct: any[] = [];
   TotalPrice: number = 0;
   localCartProgress = () => this.cartService.Lodingcart;
+  disablecart = ():boolean => CartService.disablecart;
 
-  constructor(private cartService: CartService, private http: HttpClient, private router: Router) { }
+  constructor(private cartService: CartService, private http: HttpClient, private auth: TempAuthService) { }
 
   ngOnInit(): void {
     this.GetCart();
@@ -23,17 +25,17 @@ export class CartComponent implements OnInit {
   }
 
   UpdateQuantity(event: any, id: string) {
-
-    if (this.cartService.Lodingcart) return;
-    this.cartService.Lodingcart = true;
+    CartService.disablecart = true;
     let selectedValue = event.target.value;
     this.cartService.updateQtycart(selectedValue, id);
   }
 
   PlaceOrder() {
-    if (this.cartService.Lodingcart) return;
+    if (this.cartService.Lodingcart ||!this.auth.IsLogged()) return;
     this.cartService.Lodingcart = true;
 
+    // if (!this.auth.IsLogged())
+    /* implement navigation to login page here */
 
     if (this.CartProduct.length <= 0) return;
     const headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
@@ -43,22 +45,24 @@ export class CartComponent implements OnInit {
       this.http.post(CheckoutURL, null, { headers: headers }).subscribe((r: any) => {
         window.location.href = r.paymentlink
       })
-    });
+    },error=> ErrorComponent.ShowMessage(error.error));
   }
 
   RemoveProduct(id: string) {
-    if (this.cartService.Lodingcart) return;
-    this.cartService.Lodingcart = true;
+    CartService.disablecart = true;
     this.cartService.removefromcart(id);
   }
 
   GetCart(): void {
     if (this.cartService.Lodingcart) return;
     this.cartService.Lodingcart = true;
-    this.cartService.GetCart();
-    this.cartService.cartData$.subscribe((cartData: any) => {
-      this.CartProduct = cartData;
-      this.TotalPrice = cartData.TotalPrice;
+    
+      this.cartService.GetCart();
+ 
+      
+      this.cartService.cartData$.subscribe((cartData: any) => {
+        this.CartProduct = cartData;
+        this.TotalPrice = cartData.TotalPrice;
       this.TotalPrice = this.GetTotalPrice(cartData);
     });
   }

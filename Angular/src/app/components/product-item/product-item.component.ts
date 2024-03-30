@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { CategoryService } from '../../services/category.service';
 import { ActivatedRoute } from '@angular/router';
+import { TempAuthService } from '../../services/temp-auth.service';
 
 @Component({
   selector: 'app-product-item',
@@ -30,6 +31,7 @@ export class ProductItemComponent {
     private cartservice: CartService,
     private categoryservice: CategoryService,
     private rout: ActivatedRoute,
+    private auth:TempAuthService
   ) { }
 
   categories: any;
@@ -41,16 +43,19 @@ export class ProductItemComponent {
   sort: string = this.productservice.sort;
 
   productSelectedPrice: { [productId: string]: number } = {};
+  disablecart = ():boolean => CartService.disablecart;
 
   static FireOnce: boolean = true;
   ngOnInit() {
     this.productservice.limit = 30;
     this.productservice.page = 1;
     this.productservice.sort = 'Recommended';
-    this.RenderGetProducts();
+
+    this.RenderGetProducts(this.page);
   }
 
-  RenderGetProducts(): void {
+  RenderGetProducts(page:number): void {
+
     const categoryId = this.rout.snapshot.paramMap.get('id');
 
     /* if the limit change make the page to 1 because it will skip products with diffrent limit */
@@ -58,7 +63,9 @@ export class ProductItemComponent {
       this.productservice.page = 1;
       this.page = 1;
     } else {
-      this.productservice.page = this.page;
+      this.productservice.page = page;
+      /* make the page here is the same page that send by the child pagination */
+      this.page = page
     }
 
     this.productservice.limit = this.limit;
@@ -81,23 +88,15 @@ export class ProductItemComponent {
   }
 
   AddToCart(p: any) {
-    if (this.cartservice.Lodingcart) return;
-    if (this.IsLogged()) {
-      this.cartservice.Lodingcart = true;
+    if (this.cartservice.Lodingcart ) return;
+      CartService.disablecart = true;
       p.incart = !p.incart;
-      this.cartservice.addToCart({
-        Product: p,
-        Quantity: this.productSelectedPrice[p._id] || 1,
-      });
-    } else {
-      /* Go To Login */
-      alert("Login first to perform this action")
-    }
+      this.cartservice.addToCart({ Product: p,Quantity: this.productSelectedPrice[p._id] || 1 });
   }
-
+  
   RemoveFromCart(p: any) {
     if (this.cartservice.Lodingcart) return;
-    this.cartservice.Lodingcart = true;
+    CartService.disablecart = true;
     p.incart = !p.incart;
     this.cartservice.removefromcart(p._id);
   }
@@ -110,7 +109,6 @@ export class ProductItemComponent {
   OnproductQuantitychange(event: any, productId: string): void {
     let selectedValue = event.target.value;
     this.productSelectedPrice[productId] = selectedValue;
-    this.GetProducts()
   }
 
   isproductinCart = (ssss: boolean): boolean => ssss;
@@ -121,25 +119,11 @@ export class ProductItemComponent {
   }
 
 
-  GotoPage(Pnum: number): void {
-    console.log(Pnum)
-    if (Pnum <= this.TotalPages && Pnum > 0) {
-      this.page = Pnum;
-    } else if (Pnum >= this.TotalPages) {
-      this.page = this.TotalPages;
-    } else {
-      this.page = 1;
-    }
-    this.RenderGetProducts();
-  }
-
   public createRange(number: number): number[] {
-    return new Array(number).fill(0).map((n, index) => index + 1);
+    return new Array(+number).fill(0).map((n, index) => index + 1);
   }
+  localProductProgress = () => this.productservice.Lodingproduct;
 
   /* Temperory till user service is implemented */
-  public IsLogged(): boolean {
-    return localStorage.getItem('jwt') != null;
-  }
-
+  public IsLogged =(): boolean=>  this.auth.IsLogged();
 }

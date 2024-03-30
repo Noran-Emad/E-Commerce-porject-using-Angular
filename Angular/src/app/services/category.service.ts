@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,18 +9,19 @@ export class CategoryService {
 
   headers = new HttpHeaders({ 'jwt': `${localStorage.getItem('jwt')}` });
   constructor(private http: HttpClient) { }
-  categories: any;
+  private categoriesSubject = new BehaviorSubject<any>(null);
+  public categoryloding:boolean = false;
+
 
   GetCategories(): Observable<any> {
     let CategoryURL = 'http://localhost:3000/api/category';
-    if (!this.categories) {
-      return this.http.get(CategoryURL, { headers: this.headers }).pipe(
-        tap((CategoryData) => {
-          this.categories = CategoryData;
-        })
-      );
-    } else {
-      return of(this.categories);
-    }
+    if (!this.categoryloding) {
+      /* if it's first time to get the categories data get it and make the condition false to get only once */
+      this.categoryloding = true;
+       this.http.get(CategoryURL, { headers: this.headers }).subscribe((CategoryData) => {
+         this.categoriesSubject.next(CategoryData)
+        });
+      }
+      return this.categoriesSubject.asObservable();
   }
 }

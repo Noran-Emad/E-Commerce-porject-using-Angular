@@ -1,159 +1,215 @@
-<div class="d-flex justify-content-end w-100  mt-5">
+<ng-container *ngIf="!localProductProgress() else whilenotloding">
 
-  <div class="me-3">
-    <label class="mx-2">Sort by</label>
-    <select class="px-2 py-1" [(ngModel)]="sort" (change)="RenderGetProducts()">
-      <option value="Recommended">Recommended</option>
-      <option value="Low">Price Low to High</option>
-      <option value="High">Price High to Low</option>
-      <option value="Discounted">Offers</option>
-      <option value="New">New Arrivals</option>
-    </select>
+  <div class="d-flex justify-content-end w-100  mt-5">
+
+    <div class="me-3">
+      <label class="mx-2">Sort by</label>
+      <select class="px-2 py-1" [(ngModel)]="sort" (change)="RenderGetProducts(page)">
+        <option value="Recommended">Recommended</option>
+        <option value="Low">Price Low to High</option>
+        <option value="High">Price High to Low</option>
+        <option value="Discounted">Offers</option>
+        <option value="New">New Arrivals</option>
+      </select>
+    </div>
+
+    <div class="me-3">
+      <label class="mx-2">Display</label>
+      <select class="px-2 py-1" [(ngModel)]="limit" (change)="RenderGetProducts(page)">
+        <option value=6>6 per page</option>
+        <option value=30>30 per page</option>
+        <option value=60>60 per page</option>
+      </select>
+    </div>
   </div>
 
-  <div class="me-3">
-    <label class="mx-2">Display</label>
-    <select class="px-2 py-1" [(ngModel)]="limit" (change)="RenderGetProducts()">
-      <option value=6>6 per page</option>
-      <option value=30>30 per page</option>
-      <option value=60>60 per page</option>
-    </select>
-  </div>
-</div>
 
+  <div class="container">
+    <div class="row d-flex justify-content-start p-0">
 
-<div class="container">
-  <div class="row d-flex justify-content-start p-0">
+      <ng-container *ngFor="let product of products">
 
-    <ng-container *ngFor="let product of products">
+        <div class="card w-content p-0 my-2 mx-1" style="width: 13rem;">
 
-      <div class="card w-content p-0 my-2 mx-1" style="width: 13rem;">
+          <div class="imageProducts">
+            <img style="cursor: pointer;" routerLink="/products/{{product._id}}" src={{product.productImage}}
+              class="card-img-top prodimage max-height-15rem p-3" alt="...">
+            <div class="rating px-3 my-1 mx-2 roundedcustom-circle d-flex justify-content-between">
+              <span>{{product.AverageRating??0 | number}}</span>
 
-        <div class="imageProducts">
-          <img style="cursor: pointer;" routerLink="/products/{{product._id}}" src={{product.productImage}}
-            class="card-img-top prodimage max-height-15rem p-3" alt="...">
-          <div class="rating px-3 my-1 mx-2 roundedcustom-circle d-flex justify-content-between">
-            <span>{{product.AverageRating??0 | number}}</span>
-
-            <span class="d-flex flex-column justify-content-center align-items-center ps-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill"
-                viewBox="0 0 16 16">
-                <path
-                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-              </svg>
-            </span>
-
-
-          </div>
-        </div>
-
-        <div class="card-body ">
-
-          <h5 routerLink="products/{{product._id}}" style="cursor: pointer;"
-            class="card-title max-height-5rem fs-6 mx-0 my-0 p-0 text-wrap">
-            {{product.ProductName}}</h5>
-
-
-          <ng-container *ngIf="!(product.Discount > 0) else HaveDiscount">
-
-            <div class="card-text text-truncate mx-0 my-0 p-0">
-              <span class="fw-bold fs-5">{{product.productPrice | number}}</span>
-              <span style="font-size: 0.7rem;" class="fs-6"> EGP</span>
-            </div>
-
-            <div class="text-muted p-0 m-0">
-              <span class="DiscountText"></span>
-            </div>
-
-          </ng-container>
-
-          <ng-template #HaveDiscount>
-            <div class="card-text text-truncate mx-0 my-0 p-0">
-              <span class="fw-bold fs-5">{{ (product.productPrice - (product.productPrice * (product.Discount / 100))) |
-                number }}</span>
-              <span class="text currncy-disc"> EGP </span>
-            </div>
-
-            <div class="text-muted p-0 m-0 h-content">
-              <span class="text-decoration-line-through text-muted" style="font-size: 0.8rem;">
-                {{product.productPrice | number}}
+              <span class="d-flex flex-column justify-content-center align-items-center ps-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-star-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
               </span>
-              <span class="DiscountText" style="font-size: 0.7rem;">{{ product.Discount }}% OFF</span>
+
+
             </div>
-          </ng-template>
-
-
-          <div [hidden]="isproductinCart(product.incart)">
-            <button (click)="AddToCart(product)" class="btn btn-success py-1 cartbtn roundedcustom-circle fs-10  mt-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-cart-plus-fill" viewBox="0 1 16 16">
-                <path
-                  d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0" />
-              </svg>
-              Add to Cart
-            </button>
-            <select style="outline: none;" (change)="OnproductQuantitychange($event,product._id)"
-              class="btn pr-3 py-1 Qroundedcustome-circle  mt-2">
-              <ng-container *ngFor="let item of createRange(product.productQuantity)">
-                <option>{{item}}</option>
-              </ng-container>
-            </select>
           </div>
 
-          <div [hidden]="!isproductinCart(product.incart)">
-            <button (click)="RemoveFromCart(product)"
-              class="btn btn-danger px-4 py-1 cartbtn roundedcustom-circle fs-10  mt-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-cart-dash-fill" viewBox="0 0 16 16">
-                <path
-                  d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M6.5 7h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1" />
-              </svg>
-              Remove from Cart
-            </button>
-          </div>
+          <div class="card-body ">
 
+            <h5 routerLink="products/{{product._id}}" style="cursor: pointer;"
+              class="card-title max-height-5rem fs-6 mx-0 my-0 p-0 text-wrap">
+              {{product.ProductName}} {{product.incart}}</h5>
+
+
+            <ng-container *ngIf="!(product.Discount > 0) else HaveDiscount">
+
+              <div class="card-text text-truncate mx-0 my-0 p-0">
+                <span class="fw-bold fs-5">{{product.productPrice | number}}</span>
+                <span style="font-size: 0.7rem;" class="fs-6"> EGP</span>
+              </div>
+
+              <div class="text-muted p-0 m-0">
+                <span class="DiscountText"></span>
+              </div>
+
+            </ng-container>
+
+            <ng-template #HaveDiscount>
+              <div class="card-text text-truncate mx-0 my-0 p-0">
+                <span class="fw-bold fs-5">{{ (product.productPrice - (product.productPrice * (product.Discount / 100)))
+                  |
+                  number }}</span>
+                <span class="text currncy-disc"> EGP </span>
+              </div>
+
+              <div class="text-muted p-0 m-0 h-content">
+                <span class="text-decoration-line-through text-muted" style="font-size: 0.8rem;">
+                  {{product.productPrice | number}}
+                </span>
+                <span class="DiscountText" style="font-size: 0.7rem;">{{ product.Discount }}% OFF</span>
+              </div>
+            </ng-template>
+
+
+            <div [hidden]="isproductinCart(product.incart)">
+              <button [disabled]="disablecart()" (click)="AddToCart(product)"
+                class="btn btn-success py-1 cartbtn roundedcustom-circle fs-10  mt-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-cart-plus-fill" viewBox="0 1 16 16">
+                  <path
+                    d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0" />
+                </svg>
+                Add to Cart
+              </button>
+              <select style="outline: none;" (change)="OnproductQuantitychange($event,product._id)"
+                class="btn pr-3 py-1 Qroundedcustome-circle  mt-2">
+                <ng-container *ngFor="let item of createRange(product.productQuantity)">
+                  <option>{{item}}</option>
+                </ng-container>
+              </select>
+            </div>
+
+            <div [hidden]="!isproductinCart(product.incart)">
+              <button [disabled]="disablecart()" (click)="RemoveFromCart(product)"
+                class="btn btn-danger px-4 py-1 cartbtn roundedcustom-circle fs-10  mt-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-cart-dash-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M6.5 7h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1" />
+                </svg>
+                Remove from Cart
+              </button>
+            </div>
+
+          </div>
         </div>
-      </div>
 
-    </ng-container>
-
-  </div>
-</div>
-
-
-<nav aria-label="...">
-  <ul class="pagination justify-content-center">
-
-    <li class="page-item disabled" [class.disabled]="page===1">
-      <span style="cursor:pointer;" class="page-link" (click)="GotoPage(page-1)"><svg xmlns="http://www.w3.org/2000/svg"
-          width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-          <path fill-rule="evenodd"
-            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-        </svg></span>
-    </li>
-
-    <ng-container *ngFor="let item of createRange(TotalPages)">
-
-      <ng-container *ngIf="item == page; else NotCurrentPage">
-        <li class="page-item "><span style="cursor: default;" class="page-link pagination-active">{{item}}</span></li>
       </ng-container>
 
-      <ng-template #NotCurrentPage>
-        <li class="page-item">
-          <a class="page-link pointer" style="cursor: pointer;" (click)="GotoPage(item)">{{item}}</a>
-        </li>
-      </ng-template>
+    </div>
+  </div>
 
-    </ng-container>
 
-    <li class="page-item">
-      <a class="page-link" [class.disabled]="page===TotalPages" style="cursor: pointer;" (click)="GotoPage(page+1)"><svg
-          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right"
-          viewBox="0 0 16 16">
-          <path fill-rule="evenodd"
-            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-        </svg></a>
-    </li>
+  <app-pagination [page]="page" [TotalPages]="TotalPages" (NavigateTo)="RenderGetProducts($event)"></app-pagination>
+</ng-container>
 
-  </ul>
-</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ng-template #whilenotloding>
+
+  <div class="d-flex justify-content-end w-100  mt-5">
+
+    <div class="me-3 col-1">
+      <label class="mx-2 "></label>
+      <select style="background-color: rgba(174, 174, 174, 0.541);" class="px-2 py-1 placeholder placeholder-wave col-12" >
+      </select>
+    </div>
+
+    <div class="me-3 col-1">
+      <label class="mx-2 "></label>
+      <select style="background-color: rgba(174, 174, 174, 0.541);" class="px-2 py-1  placeholder placeholder-wave col-12">
+      </select>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row d-flex justify-content-start p-0">
+      <ng-container *ngFor="let product of createRange(limit)">
+
+
+        <div class="card w-content p-0 my-2 mx-1" style="width: 13rem;">
+
+          <div class="imageProducts">
+            <img style="background-color: rgba(174, 174, 174, 0.541);" class="card-img-top prodimage max-height-15rem p-3 placeholder placeholder-wave" src="">
+          </div>
+
+          <div class="card-body ">
+
+            <h5 style="background-color: rgba(174, 174, 174, 0.541);" class="card-title  fs-7 mx-0 my-0 p-0 text-wrap placeholder placeholder-wave col-11"></h5>
+
+            <div style="background-color: rgba(174, 174, 174, 0.541);" class="card-text text-truncate mx-0 my-0 p-0  placeholder placeholder-wave col-7"></div>
+
+            <div><button style="max-height: 2rem; border-radius: 1rem;"  class="btn btn-success placeholder-wave disabled placeholder col-12 mt-2"></button></div>
+
+          </div>
+        </div>
+
+
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

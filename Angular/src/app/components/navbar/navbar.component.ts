@@ -1,5 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
+import { ErrorComponent } from '../error/error.component';
+import { TempAuthService } from '../../services/temp-auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +12,7 @@ export class NavbarComponent implements OnInit {
   CartProduct: any[] = [];
   Count: number = 0;
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService,private auth:TempAuthService) { }
   isSmallScreen: boolean = true;
 
   ngOnInit(): void {
@@ -20,24 +22,23 @@ export class NavbarComponent implements OnInit {
   }
 
   GetCart(): void {
-    this.cartService.GetCart();
-    this.cartService.cartData$.subscribe((cartData: any) => {
-      this.CartProduct = cartData;
-      this.CartitemCount();
-    });
+     this.cartService.GetCart();
+      this.cartService.cartData$.subscribe((cartData: any) => {
+        this.CartProduct = cartData;
+        this.CartitemCount();
+      });
   }
 
   CartitemCount(): void {
-    this.Count = this.CartProduct.reduce((total, product) => +total + +product.Quantity, 0);
+    this.Count = this.CartProduct.reduce((total:any, product:any) => +total + +product.Quantity, 0);
   }
 
-  isuserLogged() {
-    return localStorage.getItem('jwt') ? true : false;
-  }
-
-  myalert() {
-    alert("Login first to perform this action")
-  }
+  isuserLogged = this.auth.IsLogged;
+  LoginFun = () => this.auth.LoginFunction();
+  LogoutFun = () =>this.auth.LogoutFunction();
+  
+  myalert = () => ErrorComponent.ShowMessage("Login first to perform this action")
+  
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.checkScreenWidth();

@@ -3,4 +3,4 @@
   <p class="text-center fs-5">{{category?.CategoryDescription}}</p>
 </div>
 
-<app-product-item [products]="products" (RefreshProducts)="GetProducts($event)"></app-product-item>
+<app-product-item [products]="products" [TotalPages]="TotalPages" (RefreshProducts)="GetProducts($event)"></app-product-item>

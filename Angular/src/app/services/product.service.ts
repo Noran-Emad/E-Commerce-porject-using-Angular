@@ -1,6 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ErrorComponent } from '../components/error/error.component';
+import { CartService } from './cart.service';
+import { HomeComponent } from '../components/home/home.component';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +11,7 @@ import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 export class ProductService {
 
   Lodingproduct: boolean = false;
+  headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
 
   page: number = 1;
   limit: number = 30;
@@ -28,34 +32,39 @@ export class ProductService {
   CategoryProductData$: Observable<any> = this.CategoryProductDataSubject.asObservable();
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cartservice:CartService) { }
 
   getProducts(isok: boolean): void {
     if (isok) {
       const ProductsURL = `http://localhost:3000/api/Products?limit=${this.limit}&page=${this.page}&sort=${this.sort}`;
-      this.http.get<any[]>(ProductsURL).subscribe(
-        (productsData: any) => {
-          this.productsDataSubject.next(productsData.Products);
-          this.TotalPagesDataSubject.next(productsData.TotalPages);
-          this.Lodingproduct = false;
-        },
-        (error) => {
-          console.error('Error fetching product data:', error);
-        }
-      );
+      this.http.get<any[]>(ProductsURL,{headers:this.headers}).subscribe((productsData: any) => {
+        
+        this.cartservice.cartData$.subscribe((cart:any)=>{
+          productsData.Products.forEach((product: any) => {
+            product.incart = cart.some((item:any) => item.Product._id === product._id);
+          });
+
+            this.productsDataSubject.next(productsData.Products);
+            this.TotalPagesDataSubject.next(productsData.TotalPages);
+            this.Lodingproduct = false;
+          },
+          (error) => {
+            ErrorComponent.ShowMessage(error.error)
+          }
+          );
+    })
     }
   }
 
 
   GetaProduct(id: string) {
     const ProductURL = `http://localhost:3000/api/Products/${id}`;
-    this.http.get<any>(ProductURL).subscribe(
-      (productData: any) => {
+    this.http.get<any>(ProductURL).subscribe((productData: any) => {
         this.aproductDataSubject.next(productData);
         this.Lodingproduct = false;
       },
       (error) => {
-        console.error('Error fetching product data:', error);
+        ErrorComponent.ShowMessage(error.error)
       }
     );
   }
@@ -67,7 +76,7 @@ export class ProductService {
       this.Lodingproduct = false;
     },
       (error) => {
-        console.error('Error fetching product data:', error);
+        ErrorComponent.ShowMessage(error.error)
       }
     );
   }

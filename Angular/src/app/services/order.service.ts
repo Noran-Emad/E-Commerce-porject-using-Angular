@@ -15,15 +15,14 @@ export class OrderService {
   orderData$: Observable<any[]> = this.OrderDataSubject.asObservable();
 
 
-  getOrders(): void {
-    this.http.get('http://localhost:3000/api/order/getAll/', { headers: this.headers }).subscribe((res: any) => {
-      this.OrderDataSubject.next(res);
-      this.Lodingorder = false;
+  getOrders(page:number): void {
+    this.http.get(`http://localhost:3000/api/order/getAll?page=${page}`, { headers: this.headers }).subscribe((res: any) => {
+      this.OrderDataSubject.next(res);  
+        this.Lodingorder = false;
     });
   }
 
   CancelOrder(id: any): void {
-    let currentorder = this.OrderDataSubject.getValue();
     this.http.patch(`http://localhost:3000/api/order/cancel/${id}`, null, { headers: this.headers }).subscribe((res: any) => {
       let currentorder = this.OrderDataSubject.getValue();
       currentorder.forEach((order) => {

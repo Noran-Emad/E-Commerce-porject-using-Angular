@@ -10,10 +10,13 @@ import { ProductsComponent } from './components/products/products.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './components/footer/footer.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoryComponent } from './components/category/category.component';
 import { LodingComponent } from './components/loding/loding.component';
 import { ProductItemComponent } from './components/product-item/product-item.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { ErrorComponent } from './components/error/error.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -26,13 +29,17 @@ import { ProductItemComponent } from './components/product-item/product-item.com
     FooterComponent,
     CategoryComponent,
     LodingComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    PaginationComponent,
+    ErrorComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

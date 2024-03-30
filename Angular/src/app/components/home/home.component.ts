@@ -35,24 +35,35 @@ export class HomeComponent implements OnDestroy {
 
   static FireOnce: boolean = true;
   ngOnInit() {
-    this.GetProducts(5, HomeComponent.FireOnce);
+    // this.GetProducts(5, HomeComponent.FireOnce);
+    HomeComponent.FireOnce = false;
     this.productservice.limit = 30;
     this.productservice.page = 1;
     this.productservice.sort = 'Recommended';
     this.GetCategories();
+    window.scrollTo({top: 0,behavior: 'instant'})
   }
 
 
   GetProducts(id: any, isok: boolean): void {
-
     if (this.productservice.Lodingproduct) return;
     this.productservice.Lodingproduct = true;
+    
+
+    this.page= this.productservice.page;
+    this.limit = this.productservice.limit;
+    this.sort = this.productservice.sort;
+
+
+
 
     this.categoryservice.GetCategories();
     this.productservice.getProducts(isok);
-
+    
     this.cartservice.cartData$.subscribe((cartData) => {
+
       this.productservice.productsData$.subscribe((productsData) => {
+        
         this.products?.forEach((product: any) => {
           let exists = cartData.some((item) => item.Product._id === product._id);
           product.incart = exists;
@@ -80,17 +91,15 @@ export class HomeComponent implements OnDestroy {
 
   itemsPerSlide: number = this.calculateItemsPerSlide();
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.itemsPerSlide = this.calculateItemsPerSlide();
-  }
-
   calculateItemsPerSlide(): any {
     const breakpoints = { 522: 2, 700: 3, 900: 4, 1207: 5, 1400: 6, 2000: 7 };
     const screenWidth = window.innerWidth;
     return Object.values(breakpoints).find((value, index, array) => screenWidth < +Object.keys(breakpoints)[index] || index === array?.length - 1);
   }
-
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.itemsPerSlide = this.calculateItemsPerSlide();
+  }
   chunks(arr: any[], size: number): any[][] {
     return Array.from({ length: Math.ceil(arr?.length / size) }, (_, i) =>
       arr?.slice(i * size, i * size + size)
