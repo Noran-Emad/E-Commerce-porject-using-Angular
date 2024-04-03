@@ -1,0 +1,52 @@
+    <!-- Sidebar Components -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Dashboard</h3>
+        </div>
+
+        <ul class="list-unstyled components">    
+            <li>
+                <a [routerLinkActiveOptions]="{exact:false}" 
+                routerLink='/admin/products' 
+                routerLinkActive="active"
+                data-toggle="collapse" aria-expanded="false" 
+                >Products</a>      
+            </li>
+            
+            <li>
+                <a [routerLinkActiveOptions]="{exact:false}" 
+                routerLink='/admin/orders' 
+                routerLinkActive="active"
+                data-toggle="collapse" aria-expanded="false" 
+                class="dropdown-toggle"
+                    >Orders</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="#">Pinding Orders</a>
+                    </li>
+                    <li>
+                        <a href="#">Orders</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li>
+                <a [routerLinkActiveOptions]="{exact:false}" 
+                routerLink='/admin/products' 
+                routerLinkActive="active"
+                data-toggle="collapse" aria-expanded="false" 
+                >Catigories</a>      
+            </li>
+        </ul>
+    </nav>
+
+    
+
+<script>
+    $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
+
+</script>

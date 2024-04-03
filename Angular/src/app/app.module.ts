@@ -17,6 +17,8 @@ import { ProductItemComponent } from './components/product-item/product-item.com
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { ErrorComponent } from './components/error/error.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { AdminSidebarComponent } from './admin/components/admin-sidebar/admin-sidebar.component';
+import { AdminDashboardComponent } from './admin/components/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { PaymentComponent } from './components/payment/payment.component';
     PaginationComponent,
     ErrorComponent,
     PaymentComponent,
+    AdminSidebarComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     BrowserModule,
