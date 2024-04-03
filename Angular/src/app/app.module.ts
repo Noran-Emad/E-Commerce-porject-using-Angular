@@ -11,7 +11,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoryComponent } from './components/category/category.component';
-import { LodingComponent } from './components/loding/loding.component';
 import { ProductItemComponent } from './components/product-item/product-item.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { ErrorComponent } from './components/error/error.component';
@@ -19,6 +18,9 @@ import { PaymentComponent } from './components/payment/payment.component';
 import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AuthInterceptor } from './authinterceptor.interceptor';
+import { RegisterComponent } from './components/register/register.component';
+import { DefaultLayoutComponent } from './components/default-layout/default-layout.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +32,15 @@ import { AuthInterceptor } from './authinterceptor.interceptor';
     NavbarComponent,
     FooterComponent,
     CategoryComponent,
-    LodingComponent,
     ProductItemComponent,
     PaginationComponent,
     ErrorComponent,
     PaymentComponent,
     AdminSidebarComponent,
     AdminDashboardComponent,
+    RegisterComponent,
+    DefaultLayoutComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
