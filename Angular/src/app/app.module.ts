@@ -19,6 +19,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { AdminSidebarComponent } from './admin/components/admin-sidebar/admin-sidebar.component';
 import { AdminDashboardComponent } from './admin/components/admin-dashboard/admin-dashboard.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,9 @@ import { AdminDashboardComponent } from './admin/components/admin-dashboard/admi
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
