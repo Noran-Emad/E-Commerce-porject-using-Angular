@@ -19,6 +19,9 @@ import { ErrorComponent } from './components/error/error.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ProductComponent } from './admin-dashboard/product/product/product.component';
+import { AddproductComponent } from './admin-dashboard/addproduct/addproduct/addproduct.component';
+import { PendingorderComponent } from './admin-dashboard/pendingorder/pendingorder/pendingorder.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     PaymentComponent,
     AdminSidebarComponent,
     AdminDashboardComponent,
+    ProductComponent,
+    AddproductComponent,
+    PendingorderComponent,
   ],
   imports: [
     BrowserModule,
