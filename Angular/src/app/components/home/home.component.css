@@ -1,5 +1,10 @@
 .CarouselHight {
-  height: fit-content !important;
+  min-height: 20rem;
+  max-height: 20rem;
+}
+
+.CarouselHight img {
+  height: 100%;
 }
 
 .CategoriesDiv img {

@@ -5,6 +5,8 @@
             <div class="col-2 mx-auto my-5"><img class="w-100" src="../../../assets/images/sucsses.png" alt="payment sucsses"></div>
             <h1 class="text-center">Your payment is successful</h1>
             <p class="fs-5 text-center">Thank you for your payment, we will in contact with more details shortly</p>
+            <p class="fs-6 text-center">Payment ID <span class="text-success">{{payment._id}}</span></p>
+            <p class="fs-6 text-center">Order ID is <span class="text-success">{{payment.Order}}</span></p>
             <button routerLink="" class="btn btn-success d-block px-5 mx-auto">Go To Home</button>
         </div>
     </ng-container>
@@ -13,6 +15,8 @@
         <div class="container" style="min-height: 90vh;">
             <div class="col-2 mx-auto my-5"><img class="w-100" src="../../../assets/images/fail.png" alt="payment fail"></div>
             <h1 class="text-center">Your payment is failed</h1>
+            <p class="fs-6 text-center">Payment ID <span class="text-danger">{{payment._id}}</span></p>
+            <p class="fs-6 text-center">Order ID is <span class="text-danger">{{payment.Order}}</span></p>
             <button routerLink="" class="btn btn-danger d-block px-5 mx-auto">Go To Home</button>
         </div>
     </ng-template>

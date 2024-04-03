@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ErrorComponent } from '../components/error/error.component';
 import { CartService } from './cart.service';
-import { HomeComponent } from '../components/home/home.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +10,6 @@ import { HomeComponent } from '../components/home/home.component';
 export class ProductService {
 
   Lodingproduct: boolean = false;
-  headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
-
   page: number = 1;
   limit: number = 30;
   sort: string = 'Recommended';
@@ -37,7 +34,7 @@ export class ProductService {
   getProducts(isok: boolean): void {
     if (isok) {
       const ProductsURL = `http://localhost:3000/api/Products?limit=${this.limit}&page=${this.page}&sort=${this.sort}`;
-      this.http.get<any[]>(ProductsURL,{headers:this.headers}).subscribe((productsData: any) => {
+      this.http.get<any[]>(ProductsURL).subscribe((productsData: any) => {
         
         this.cartservice.cartData$.subscribe((cart:any)=>{
           productsData.Products.forEach((product: any) => {

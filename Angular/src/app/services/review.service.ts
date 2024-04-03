@@ -12,7 +12,6 @@ export class ReviewService {
 
   constructor(private http: HttpClient,private productservice:ProductService,public auth:TempAuthService) { }
   Lodingreview :boolean = false;
-  headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
   reviewsSubject = new BehaviorSubject<any>(null);
   productreviewsdata$:Observable<any> = this.reviewsSubject.asObservable();
 
@@ -23,7 +22,7 @@ export class ReviewService {
   GetProductReviews(prodid:string,page:number){
     let reviewsURL = `http://localhost:3000/api/Review/reviews/${prodid}?page=${page}`;
 
-    this.http.get<any>(reviewsURL,{headers:this.headers}).pipe(take(1)).subscribe((reviws: any) => {
+    this.http.get<any>(reviewsURL).pipe(take(1)).subscribe((reviws: any) => {
         this.reviewsSubject.next(reviws);
         this.Lodingreview = false;
       },
@@ -37,7 +36,7 @@ export class ReviewService {
     DeleteReview(prodid:string){
     let reviewsURL = `http://localhost:3000/api/Review/reviews/${prodid}`;
 
-    this.http.delete<any>(reviewsURL,{headers:this.headers}).subscribe(() => {
+    this.http.delete<any>(reviewsURL).subscribe(() => {
       this.productservice.GetaProduct(prodid)
       this.GetProductReviews(prodid,1)
       this.Lodingreview = false;
@@ -53,9 +52,8 @@ export class ReviewService {
   SubmitReview(rate: number, title: string, id: string) {
     if (this.auth.IsLogged()) {
       const AddReviewURL = `http://localhost:3000/api/Review/reviews/${id}`;
-      const headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
   
-        this.http.post(AddReviewURL, { "Title": title,"Rating": rate }, { headers: headers }).subscribe((myx:any) => {
+        this.http.post(AddReviewURL, { "Title": title,"Rating": rate }).subscribe((myx:any) => {
           let old = this.reviewsSubject.getValue();
           old.UserReviewexiest = myx;
           this.reviewsSubject.next(old)
