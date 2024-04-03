@@ -21,6 +21,10 @@ import { AuthInterceptor } from './authinterceptor.interceptor';
 import { RegisterComponent } from './components/register/register.component';
 import { DefaultLayoutComponent } from './components/default-layout/default-layout.component';
 import { LoginComponent } from './components/login/login.component';
+import { ProductComponent } from './admin-dashboard/product/product/product.component';
+import { AddproductComponent } from './admin-dashboard/addproduct/addproduct/addproduct.component';
+import { PendingorderComponent } from './admin-dashboard/pendingorder/pendingorder/pendingorder.component';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +45,9 @@ import { LoginComponent } from './components/login/login.component';
     RegisterComponent,
     DefaultLayoutComponent,
     LoginComponent,
+    ProductComponent,
+    AddproductComponent,
+    PendingorderComponent,
   ],
   imports: [
     BrowserModule,
