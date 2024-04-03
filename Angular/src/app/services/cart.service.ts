@@ -1,6 +1,6 @@
 // cart.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ErrorComponent } from '../components/error/error.component';
 import { TempAuthService } from './temp-auth.service';
@@ -10,7 +10,6 @@ import { TempAuthService } from './temp-auth.service';
 })
 
 export class CartService {
-  headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
 
   private cartDataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   cartData$: Observable<any[]> = this.cartDataSubject.asObservable();
@@ -28,7 +27,7 @@ export class CartService {
     if(this.auth.IsLogged()){
       
       const cartURL = 'http://localhost:3000/api/cart/';
-      this.http.get<any[]>(cartURL, { headers: this.headers }).subscribe((cartData: any) => {
+      this.http.get<any[]>(cartURL).subscribe((cartData: any) => {
         this.cartDataSubject.next(cartData?.CartProducts ?? []);
         this.Lodingcart = false;
       },
@@ -54,8 +53,7 @@ export class CartService {
 
       /* if logged add it by api */
       this.http.post('http://localhost:3000/api/cart/add',
-      { Product: item.Product._id, Quantity: item.Quantity || 1 },
-      { headers: this.headers }).subscribe(() =>{
+      { Product: item.Product._id, Quantity: item.Quantity || 1 }).subscribe(() =>{
         this.cartDataSubject.next(updatedcart)
         CartService.disablecart = false;
       },
@@ -81,7 +79,7 @@ export class CartService {
     if(this.auth.IsLogged()){
       /* if logged remove it by api */
       let RemoveFromcartURL = `http://localhost:3000/api/Cart/remove/${id}`;
-      this.http.delete(RemoveFromcartURL, { headers: this.headers }).subscribe(() => {
+      this.http.delete(RemoveFromcartURL).subscribe(() => {
         CartService.disablecart = false;
       },
       (error) => {
@@ -111,7 +109,7 @@ export class CartService {
     if(this.auth.IsLogged()){
       /* if logged update the cart by api */
       let UpdateProduct = `http://localhost:3000/api/cart/update/${pid}`;
-      this.http.patch(UpdateProduct, { Quantity: newQty }, { headers:this.headers }).subscribe(() => {
+      this.http.patch(UpdateProduct, { Quantity: newQty }).subscribe(() => {
         CartService.disablecart = false;
       },
       (error) => {
