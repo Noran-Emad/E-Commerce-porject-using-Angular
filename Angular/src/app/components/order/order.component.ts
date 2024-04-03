@@ -31,13 +31,13 @@ export class OrderComponent implements OnInit {
     this.ordersevice.orderData$.subscribe((order:any) => {
       this.orders = order.order;
       this.totalpages = order.TotalPages;
-      // this.ordersevice.Lodingorder = false;
     });
   }
 
   CancelOrders(id: any) {
     this.ordersevice.CancelOrder(id);
-    this.GetOrders(this.page)
+    this.GetOrders(1)
+    this.page = 1;
   }
 
 }

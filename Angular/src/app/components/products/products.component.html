@@ -108,7 +108,6 @@
                   <textarea formControlName="title" [(ngModel)]="ReviewTitle" class="w-100"></textarea>
                   <p class="card-text">Share your thoughts with other customers</p>
                   <p class="text-danger" *ngIf="!myForm.controls['title'].valid">Review can't be empty</p>
-                  <!-- <ng-container></ng-container> -->
                   
                   <ng-container *ngIf="!isUserReviewd else usernotreviewed">
                     <button type="submit" class="btn btn-custom">Submit</button>

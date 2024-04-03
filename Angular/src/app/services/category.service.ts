@@ -7,7 +7,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class CategoryService {
 
-  headers = new HttpHeaders({ 'jwt': `${localStorage.getItem('jwt')}` });
   constructor(private http: HttpClient) { }
   private categoriesSubject = new BehaviorSubject<any>(null);
   public categoryloding:boolean = false;
@@ -18,7 +17,7 @@ export class CategoryService {
     if (!this.categoryloding) {
       /* if it's first time to get the categories data get it and make the condition false to get only once */
       this.categoryloding = true;
-       this.http.get(CategoryURL, { headers: this.headers }).subscribe((CategoryData) => {
+       this.http.get(CategoryURL).subscribe((CategoryData) => {
          this.categoriesSubject.next(CategoryData)
         });
       }

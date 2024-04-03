@@ -1,5 +1,16 @@
 .CarouselHight {
-  height: fit-content !important;
+  min-height: 20rem;
+  max-height: 20rem;
+}
+ .CarouselHight .active{
+  min-height: 20rem;
+  max-height: 20rem;
+}
+
+.CarouselHight img {
+  min-height: 20rem;
+  height: 100%;
+  object-fit:cover;
 }
 
 .CategoriesDiv img {

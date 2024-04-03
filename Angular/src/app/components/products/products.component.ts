@@ -20,9 +20,9 @@ export class ProductsComponent implements OnInit {
   localReviewProgress = () => this.reviewsservice.Lodingreview;
 
 
-  myForm: FormGroup = this.formbuilder.group({
-    title: ['', Validators.required],
-  });;
+    myForm: FormGroup = this.formbuilder.group({
+      title: ['', Validators.required],
+    });;
 
   id = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
   product: any;
