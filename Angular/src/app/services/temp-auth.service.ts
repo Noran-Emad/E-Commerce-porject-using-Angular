@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
 
 
@@ -8,7 +9,7 @@ import { catchError } from 'rxjs';
 })
 export class TempAuthService {
   private apiUrl = 'http://localhost:3000/api';
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
   public Lodingauth = false;
   public IsLogged = (): boolean => localStorage.getItem('jwt') != null;
 
@@ -72,6 +73,7 @@ export class TempAuthService {
 
   public LogoutFunction() {
     localStorage.clear();
+    this.router.navigate(['']);
     // window.location.reload();
   }
 

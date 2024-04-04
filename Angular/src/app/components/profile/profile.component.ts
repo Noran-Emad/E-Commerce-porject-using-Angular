@@ -90,7 +90,6 @@ export class ProfileComponent implements OnInit {
 
   logout(): void {
     this.auth.LogoutFunction();
-    this.router.navigate(['/home']);
   }
 
 }
