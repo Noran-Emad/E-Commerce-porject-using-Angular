@@ -1,1 +1,107 @@
-<p>login works!</p>
+<div class="row justify-content-between login-container">
+  <div
+    style="background-color: #f5f5f5"
+    class="col-6 d-flex justify-content-center align-items-center"
+  >
+    <img
+      src="../../../assets/images/Ecommerce campaign-pana.svg"
+      class="col-12"
+      alt=""
+      style="padding: 0"
+    />
+  </div>
+
+  <div
+    class="row align-content-center justify-content-center col-6 h-100 form-container"
+  >
+    <div
+      class="err-msg d-flex justify-content-center align-items-center"
+      *ngIf="loginError"
+    >
+      Incorrect email or password
+    </div>
+
+    <h1 class="text-center fw-bold mt-3 mb-5">Sign in</h1>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onLoginSubmit(loginForm)"
+      class="col-8"
+    >
+      <div class="mb-3">
+        <label class="form-label w-100">
+          <span class="d-block mb-2">Email</span>
+          <input
+            formControlName="email"
+            placeholder="example@domain.com"
+            class="form-control"
+          />
+        </label>
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid &&
+            (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+          "
+        >
+          <small
+            *ngIf=" loginForm.get('email')?.errors?.['required']"
+            class="text-danger"
+            >Email is required.</small
+          >
+          <small
+            *ngIf="loginForm.get('email')?.errors?.['email']"
+            class="text-danger"
+            >PLease enter a valid email address</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label w-100">
+          <span class="d-block mb-2">Password</span>
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control"
+          />
+        </label>
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            (loginForm.get('password')?.dirty ||
+              loginForm.get('password')?.touched)
+          "
+        >
+          <small
+            *ngIf=" loginForm.get('password')?.errors?.['required']"
+            class="text-danger"
+            >Password is required.</small
+          >
+          <small
+            *ngIf="loginForm.get('password')?.errors?.['pattern']"
+            class="text-danger"
+          >
+            Password must be at least 8 characters long and include at least one
+            uppercase letter, one lowercase letter, one number, and one special
+            character.
+          </small>
+        </div>
+      </div>
+      <button
+        style="background-color: #512bd4; border-color: rgb(81 43 212)"
+        class="btn btn-primary mt-3 w-100"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+      <div class="mt-3 text-center">
+        <small
+          >Don't have account?
+          <a routerLink="/register" class="text-decoration-none login-link"
+            >Create one</a
+          ></small
+        >
+      </div>
+    </form>
+  </div>
+</div>

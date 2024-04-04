@@ -26,7 +26,7 @@
 
 
 
-        <li class="nav-item roundedcustom-circle cartnavitem mx-1">
+        <!-- <li class="nav-item roundedcustom-circle cartnavitem mx-1">
           <ng-container *ngIf="isuserLogged() else Unauthorderbtn">
             <a routerLink="orders"><span class="d-inline-block px-1 text-dark">Orders</span> </a>
           </ng-container>
@@ -35,20 +35,30 @@
             <a style="cursor: pointer;" (click)="myalert()">
               <span class="d-inline-block px-1 text-dark">Orders</span></a>
           </ng-template>
-        </li>
+        </li> -->
 
+        <li class="nav-item roundedcustom-circle cartnavitem mx-1" *ngIf="isuserLogged()">
+          <ng-container>
+            <li class="nav-item roundedcustom-circle cartnavitem">
+              <a routerLink="profile">
+                <span class="d-inline-block px-1 text-dark" routerLink="profile">Profile</span>
+              </a>
+            </li>
+          </ng-container>
+        </li>
 
 
         <li class="nav-item roundedcustom-circle cartnavitem mx-1">
           <ng-container *ngIf="isuserLogged() else Unauthlogbtn">
-            <a (click)="LogoutFun()"><span class="d-inline-block px-1 text-dark">Logout</span> </a>
+            <a style="cursor: pointer;" (click)="LogoutFun()"><span class="d-inline-block px-1 text-dark">Logout</span> </a>
           </ng-container>
 
           <ng-template #Unauthlogbtn>
-            <a style="cursor: pointer;" (click)="LoginFun()">
+            <a style="cursor: pointer;" routerLink="login">
               <span class="d-inline-block px-1 text-dark">Login</span></a>
           </ng-template>
         </li>
+        
 
       </ul>
     </div>

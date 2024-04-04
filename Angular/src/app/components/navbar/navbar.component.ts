@@ -34,7 +34,7 @@ export class NavbarComponent implements OnInit {
   }
 
   isuserLogged = this.auth.IsLogged;
-  LoginFun = () => this.auth.LoginFunction();
+  // LoginFun = () => this.auth.LoginFunction();
   LogoutFun = () =>this.auth.LogoutFunction();
   
   myalert = () => ErrorComponent.ShowMessage("Login first to perform this action")
