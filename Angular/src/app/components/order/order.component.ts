@@ -36,8 +36,16 @@ export class OrderComponent implements OnInit {
 
   CancelOrders(id: any) {
     this.ordersevice.CancelOrder(id);
-    this.GetOrders(1)
-    this.page = 1;
+    this.updatingOrdersafterCancel(id);
+  }
+
+  updatingOrdersafterCancel(id:any){
+    this.orders = this.orders.map((order:any) => {
+      console.log(order)
+      if (order._id === id)
+        order.OrderStatus = 'canceled'
+      return order
+    })
   }
 
 }

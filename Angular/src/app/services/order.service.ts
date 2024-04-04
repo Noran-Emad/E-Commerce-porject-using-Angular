@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -23,12 +23,6 @@ export class OrderService {
 
   CancelOrder(id: any): void {
     this.http.patch(`http://localhost:3000/api/order/cancel/${id}`, null).subscribe((res: any) => {
-      let currentorder = this.OrderDataSubject.getValue();
-      currentorder.forEach((order) => {
-        if (order._id === id)
-          order.OrderStatus = 'canceled'
-      })
-      this.OrderDataSubject.next(currentorder);
       this.Lodingorder = false;
     });
   }

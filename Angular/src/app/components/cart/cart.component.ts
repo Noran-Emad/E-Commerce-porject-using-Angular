@@ -3,6 +3,7 @@ import { CartService } from '../../services/cart.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ErrorComponent } from '../error/error.component';
 import { TempAuthService } from '../../services/temp-auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +16,7 @@ export class CartComponent implements OnInit {
   localCartProgress = () => this.cartService.Lodingcart;
   disablecart = ():boolean => CartService.disablecart;
 
-  constructor(private cartService: CartService, private http: HttpClient, private auth: TempAuthService) { }
+  constructor(private cartService: CartService, private http: HttpClient, private auth: TempAuthService,private router: Router) { }
 
   ngOnInit(): void {
     this.GetCart();
@@ -31,11 +32,13 @@ export class CartComponent implements OnInit {
   }
 
   PlaceOrder() {
-    if (this.cartService.Lodingcart ||!this.auth.IsLogged()) return;
+    
+    if (!this.auth.IsLogged()){
+      this.router.navigate(['/login']);
+      return;
+    }
     this.cartService.Lodingcart = true;
-
-    // if (!this.auth.IsLogged())
-    /* implement navigation to login page here */
+   
 
     if (this.CartProduct.length <= 0) return;
     const headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });

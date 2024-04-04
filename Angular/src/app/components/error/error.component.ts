@@ -11,7 +11,7 @@ export class ErrorComponent {
   LocalShow = () => ErrorComponent.Show;
   LocalHideFunc = () => ErrorComponent.HideMessage();
 
-static ErrorMessage: string = 'gg';
+static ErrorMessage: string = '';
 static  Show: boolean = false;
 
  static ShowMessage(message: string) {

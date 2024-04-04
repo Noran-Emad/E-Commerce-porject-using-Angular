@@ -1,19 +1,44 @@
-<h3 class=" my-5 w-content text-center">Your Shopping Cart {{CartProduct.length === 0?'is Empty':null}}</h3>
-<div class="container">
-  <div class="row" style="align-items: center">
+<ng-container *ngIf="localCartProgress() else showcart">
+  <h3 class=" my-5 w-content text-center">Your Shopping Cart is loding</h3>
 
-    <div *ngIf="CartProduct.length === 0 else CartNotEmpty" class="w-100 d-flex justify-content-center mt-3">
-      <div class="d-flex flex-column">
+  <div class="container">
+    <div class="row">
+      <div class="col-8" >
+        <ng-container *ngFor="let product of createRange(2)">
+          <div style="background-color: rgba(174, 174, 174, 0.541);" class="cart-card-size-custom placeholder placeholder-wave col-12 my-2">
+            <div  class="col-9  d-flex flex-column justify-content-center">
+              <p class="text-truncate" style="word-wrap: break-word;"></p>
+            </div>
+          </div>
+        </ng-container>
+      </div>  
+      <div style="background-color: rgba(174, 174, 174, 0.541); border-radius: 0.5rem;" class="col-4 placeholder placeholder-wave"></div>
+    </div>
+  </div>
+</ng-container>
 
-        <button routerLink="" class="btn mb-5 w-25 mx-auto text-white" style="background-color: rgb(202, 71, 71);">Shop
-          Now</button>
-        <div class="d-flex justify-content-center"><img class="w-50 " src="../../../assets/images/emptycart.png"></div>
-      </div>
+
+
+
+
+<ng-template #showcart>
+
+  <h3 class=" my-5 w-content text-center">Your Shopping Cart {{CartProduct.length === 0?'is Empty':null}}</h3>
+  <div class="container">
+    <div class="row" style="align-items: start">
+      
+      <div *ngIf="CartProduct.length === 0 else CartNotEmpty" class="w-100 d-flex justify-content-center mt-3">
+        <div class="d-flex flex-column">
+          
+          <button routerLink="" class="btn mb-5 w-25 mx-auto text-white" style="background-color: rgb(202, 71, 71);">Shop
+            Now</button>
+            <div class="d-flex justify-content-center"><img class="w-50 " src="../../../assets/images/emptycart.png"></div>
+          </div>
     </div>
 
     <ng-template #CartNotEmpty>
 
-      <div class="col-8 ">
+      <div class="col-12 col-md-8">
         <ng-container *ngFor="let product of CartProduct">
 
           <div class="container-fluid w-100 bg-white my-2">
@@ -56,7 +81,7 @@
                     </ng-container>
                   </select>
 
-
+                  
                   <button class="btn bg-danger w-content text-white" [disabled]="disablecart()"  (click)="RemoveProduct(product.Product._id)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                       class="bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -74,12 +99,12 @@
       </div>
 
 
-      <div class="card text-center col-4 p-0 ">
-        <h5 class="card-title pt-5 pb-4 ">Order Summary</h5>
+      <div class="card text-center col-12 col-md-4 p-0 myorder mt-5">
+        <h5 class="card-title pt-3 pb-0 pt-lg-5  pb-lg-4 ">Order Summary</h5>
         <hr>
         <div class="card-body">
-          <h5 class="card-title pt-5">Total Price</h5>
-          <h4 class="card-title pt-3 pb-5">{{TotalPrice | currency:'EGP'}}</h4>
+          <h5 class="card-title pt-lg-5">Total Price</h5>
+          <h4 class="card-title pt-3 pb-lg-5">{{TotalPrice | currency:'EGP'}}</h4>
         </div>
         <div class="card-footer text-muted bg-gridant">
           <button (click)="PlaceOrder()" class="btn text-white w-100 p-2">place Order</button>
@@ -89,3 +114,4 @@
 
   </div>
 </div>
+</ng-template>
