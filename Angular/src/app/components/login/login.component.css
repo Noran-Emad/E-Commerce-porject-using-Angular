@@ -1,8 +1,36 @@
 .login-container {
-    height: 100vh;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-  }
-  
-  
+  height: 100vh;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+::ng-deep body {
+  background-color: white !important;
+}
+
+.reg-link {
+  color: #512bd4;
+}
+
+.reg-link:hover {
+  color: #4122aa;
+}
+
+.err-msg {
+  background-color: #fef1f1;
+  border: 1px solid red;
+  height: 4em;
+  padding: 0 !important;
+}
+
+
+input:focus:not(.invalid) {
+  border-color: #512bd4;
+  box-shadow: 0 0 5px 0 #512bd4;
+}
+
+input.invalid {
+  border-color: red;
+  box-shadow: none;
+}

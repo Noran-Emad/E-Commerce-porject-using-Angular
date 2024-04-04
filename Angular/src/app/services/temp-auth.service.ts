@@ -85,7 +85,7 @@ export class TempAuthService {
 
   public LogoutFunction() {
     localStorage.clear();
-    window.location.reload();
+    // window.location.reload();
   }
 
 }

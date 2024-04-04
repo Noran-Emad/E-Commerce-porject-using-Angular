@@ -14,7 +14,6 @@ export class RegisterComponent {
   data: Object = {
     name: '',
     email: '',
-    address: '',
     password: ''
   }
 
@@ -40,7 +39,6 @@ export class RegisterComponent {
         Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$')
       ]
       ],
-      address: ['', Validators.required]
     });
   }
 
@@ -49,8 +47,7 @@ export class RegisterComponent {
       this.data = {
         name: form.value.name,
         email: form.value.email,
-        password: form.value.password,
-        address: form.value.address
+        password: form.value.password
       }
 
       this.authservice.registerUser(this.data).subscribe(

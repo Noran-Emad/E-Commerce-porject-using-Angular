@@ -9,7 +9,7 @@ import { TempAuthService } from '../../services/temp-auth.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-
+  showSuccess: boolean = false;
   profileForm!: FormGroup;
   userData: any = {
     name: '',
@@ -23,15 +23,16 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.profileForm = this.fb.group({
-      name: ['',
+      name: ["",
         [Validators.minLength(3),
         Validators.maxLength(50),
-        Validators.pattern("^[a-zA-Z ,.'-]+$")
+        Validators.pattern("^[a-zA-Z ,.'-]+$"),
+        Validators.required
         ]],
 
-      email: ['', Validators.email],
-      address: ['', Validators.maxLength(250)],
-      phoneNumber: ['',
+      email: ["", [Validators.email, Validators.required]],
+      address: ["", Validators.maxLength(250)],
+      phoneNumber: ["",
         [
           Validators.maxLength(11),
           Validators.pattern(/^(012|010|011)\d{8}$/)
@@ -47,8 +48,6 @@ export class ProfileComponent implements OnInit {
       }
     );
 
-
-
   }
 
   onSubmit(form: FormGroup) {
@@ -59,20 +58,33 @@ export class ProfileComponent implements OnInit {
         address: form.value.address,
         phoneNumber: form.value.phoneNumber
       }
+
+      this.auth.updateProfile(this.userData).subscribe(
+        {
+          next: (data: any) => {
+            console.log(data);
+
+          },
+
+          error: (err: any) => {
+            console.log(err)
+          },
+          complete: () => {
+            this.showSuccess = true;
+            setTimeout(() => {
+              this.showSuccess = false;
+            }, 3000);
+          }
+
+        }
+      )
     }
 
-    this.auth.updateProfile(this.userData).subscribe(
-      {
-        next: (data: any) => {
-          console.log(data);
-        },
 
-        error: (err: any) => {
-          console.log(err)
-        }
+  }
 
-      }
-    )
+  onCancel() {
+    this.profileForm.reset(this.userData);
   }
 
 
