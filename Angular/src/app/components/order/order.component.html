@@ -1,16 +1,15 @@
-
-<ng-container *ngIf="orders.length === 0  else OrderExeist">
-    <div class="contanier">
-        <div class="h4 text-center mt-5">You haven't ordered yet</div>
-        <div class="noroderimg col-12 col-sm-10 col-md-7 col-lg-4 mx-auto"><img src="https://cdni.iconscout.com/illustration/premium/thumb/man-receiving-canceled-orders-back-4438793-3718471.png"></div>
-    </div>
-</ng-container> 
-
-
-<ng-template #OrderExeist>
-
 <ng-container *ngIf="!LodingLocalOrder() else LodingOrders">
 
+
+    <ng-container *ngIf="orders.length === 0  else OrderExeist">
+        <div class="contanier">
+            <div class="h4 text-center mt-5">You haven't ordered yet</div>
+            <div class="noroderimg col-12 col-sm-10 col-md-7 col-lg-4 mx-auto"><img src="https://cdni.iconscout.com/illustration/premium/thumb/man-receiving-canceled-orders-back-4438793-3718471.png"></div>
+        </div>
+    </ng-container> 
+
+    
+<ng-template #OrderExeist>
 
 <div class="contanier" *ngFor="let item of orders">
 
@@ -48,7 +47,53 @@
 </div>
 
 <app-pagination [TotalPages]="totalpages" [page]="page" (NavigateTo)="GetOrders($event)"></app-pagination>
+</ng-template>
 </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <ng-template #LodingOrders>
     <div class="contanier" *ngFor="let item of createRange(3)">
@@ -77,5 +122,4 @@
             </div>
         </div>
     </div>
-</ng-template>
 </ng-template>

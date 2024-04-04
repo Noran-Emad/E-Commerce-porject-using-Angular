@@ -87,6 +87,10 @@ export class ProductsComponent implements OnInit {
 
 
   SubmitReview = () => {
+    if(!this.IsLogged()){
+      this.router.navigate(['/login']);
+      return;
+    }
   if (!this.myForm.controls['title'].valid) return;
   this.reviewsservice.Lodingreview = false;
   this.reviewsservice.SubmitReview(this.selectedValue, this.ReviewTitle, this.id);

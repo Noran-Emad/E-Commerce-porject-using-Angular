@@ -21,8 +21,8 @@ const routes: Routes = [
       { path: 'products/:id', component: ProductsComponent },
       { path: 'cart', component: CartComponent },
       { path: 'category/:id', component: CategoryComponent },
-      { path: 'orders', component: OrderComponent },
-      { path: 'payment/:id', component: PaymentComponent }
+      { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
+      { path: 'payment/:id', component: PaymentComponent, canActivate: [authGuard] }
     ]
   },
   // {path: 'admin',component: AdminDashboardComponent,

@@ -1,4 +1,4 @@
-<!-- <ng-container *ngIf="!localProductProgress() else prodwhilenotloding">
+<ng-container *ngIf="!localProductProgress() else prodwhilenotloding">
 
   <div class="container">
     <div class="row bg-white my-5">
@@ -10,8 +10,8 @@
       <div class="col-md-6 p-4">
   
         <div>{{product?.CategoryID?.CategoryName}}</div>
-        <div class="fw-bold fs-2 py-2">{{product?.ProductName}}</div>
-        <div class="pb-2">{{product?.productDescription}}</div>
+        <div class="fw-bold fs-3 py-2 my-3">{{product?.ProductName}}</div>
+        <div class="pb-2 mt-3 mb-1">{{product?.productDescription}}</div>
   
   
         <ng-container *ngIf="product?.Discount > 0 else HasNoDiscount">
@@ -34,7 +34,7 @@
         </ng-template>
   
   
-        <div class="rating my-1 mx-2 RateProduct d-flex justify-content-start py-1 px-4">
+        <div class="rating my-1 RateProduct d-flex justify-content-start py-1 px-4 my-3">
           <span>{{AvgRate && AvgRate.toFixed(1) || 0 | number}}</span>
           <span class="d-flex flex-column justify-content-center align-items-center ps-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill"
@@ -296,4 +296,4 @@
               <div class="placeholder placeholder-wave col-12"></div>
             </div>
           </div>
-  </ng-template> -->
+  </ng-template>
