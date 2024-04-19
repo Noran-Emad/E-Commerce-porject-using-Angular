@@ -28,7 +28,7 @@
 
         <ng-container>
           <li class="nav-item roundedcustom-circle cartnavitem">
-            <a routerLink="/cart">
+            <a routerLink="/cart" class="nav-link">
               <span class="d-inline-block px-1 text-dark">Cart</span>
               <span class="cartcountnum d-inline-block">{{ Count }}</span>
             </a>
@@ -48,7 +48,7 @@
 
         <li class="nav-item roundedcustom-circle cartnavitem mx-1" *ngIf="isuserLogged()">
           <ng-container>
-            <a routerLink="/orders"
+            <a routerLink="/orders" class="nav-link"
               ><span class="d-inline-block px-1 text-dark">Orders</span>
             </a>
           </ng-container>
@@ -60,7 +60,7 @@
         >
           <ng-container>
             <li class="nav-item roundedcustom-circle cartnavitem">
-              <a routerLink="profile">
+              <a routerLink="profile" class="nav-link">
                 <span class="d-inline-block px-1 text-dark" routerLink="profile"
                   >Profile</span
                 >
@@ -77,9 +77,9 @@
           </ng-container>
 
           <ng-template #Unauthlogbtn>
-            <a style="cursor: pointer" routerLink="login">
+            <a style="cursor: pointer" routerLink="login" class="nav-link"  >
               <span class="d-inline-block px-1 text-dark">Login</span></a
-            >
+            > 
           </ng-template>
         </li>
       </ul>
