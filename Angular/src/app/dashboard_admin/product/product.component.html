@@ -1,0 +1,23 @@
+<section id="WORK" class="">
+    <div class="baba  text-center p-2  d-flex justify-content-center ">   
+    </div>
+    <div class="container ">
+        <div class="p-5">
+            <input [formControl]="termControl" placeholder="Search products" class="form-control w-25" type="text" name="">
+        </div>
+        <div class="row g-5 ">
+            <div *ngFor="let cat of filteredProducts" class=" mother col-md-3 p-2 border-0  ">
+                <div class="child   shadow mb-4">
+                    <div class="pic w-100 mb-4">
+                        <img class="w-100 "  [src]="cat.images" alt="">
+
+                    </div>
+                   <h2 class="lorem">{{cat.name}}</h2>
+                   <div  class="d-flex justify-content-between pp ">
+                   </div>
+                   <p class="h6 my-2 lead  textcolor " style="font-size: medium;"> Price : {{cat.price}}</p>       
+                </div>
+            </div>
+        </div>      
+    </div>
+</section>

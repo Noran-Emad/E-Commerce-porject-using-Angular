@@ -32,6 +32,12 @@ import { AdminProductsComponent } from './admin/components/admin-products/admin-
 import { AdminProductItemComponent } from './admin/components/admin-product-item/admin-product-item.component';
 import { AdminProductsPageComponent } from './admin/components/admin-products-page/admin-products-page.component';
 import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orders.component';
+//import { NavebarComponent  } from './dashboard_admin/navebar/navebar.component';
+import { product } from './dashboard_admin/product/product.component';
+import { PresentComponent } from './dashboard_admin/present/present.component';
+import { productdetailsComponent } from './dashboard_admin/product.details/product.details.component';
+import { UpdateComponent } from './dashboard_admin/update/update.component';
+
 
 
 
@@ -63,6 +69,11 @@ import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orde
     // ProductComponent,
     // AddproductComponent,
     // PendingorderComponent,
+   // NavebarComponent,
+    product,
+    PresentComponent,
+    productdetailsComponent,
+    UpdateComponent,
    
     
     

@@ -16,7 +16,11 @@ import { AdminProductsPageComponent } from './admin/components/admin-products-pa
 import { EditProductComponent } from './admin/components/edit-product/edit-product.component';
 import { AddProductComponent } from './admin/components/add-product/add-product.component';
 import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orders.component';
-
+//import {NavebarComponent} from './dashboard_admin/navebar/navebar.component'
+import { product } from './dashboard_admin/product/product.component';
+import {PresentComponent  } from './dashboard_admin/present/present.component';
+import { UpdateComponent } from './dashboard_admin/update/update.component';
+import { productdetailsComponent } from './dashboard_admin/product.details/product.details.component';
 const routes: Routes = [
   {
     path: '', component: DefaultLayoutComponent,
@@ -39,6 +43,11 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  {path:"addform",component:productdetailsComponent},
+  {path:"about",component:PresentComponent},
+  {path:"people",component:product},
+  {path:"update/:id",component:UpdateComponent},
+
 ];
 
 @NgModule({

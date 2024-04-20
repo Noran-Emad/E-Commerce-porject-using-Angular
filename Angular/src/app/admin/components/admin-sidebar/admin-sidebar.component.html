@@ -4,10 +4,14 @@
         <h2>Admin Dashboard</h2>
     </div>
     
-    <ul class="list-unstyled components">    
+    <ul class="list-unstyled components">  
+        <li >
+            <a *ngIf="islogin" routerLinkActive="active"
+            data-toggle="collapse" aria-expanded="false"  routerLink="about"  >dashboard</a>
+          </li>  
         <li>
             <a  
-            routerLink='/admin/products' 
+            routerLink='/peaple' 
             routerLinkActive="active"
             data-toggle="collapse" aria-expanded="false" 
             >Products</a>      
@@ -15,7 +19,7 @@
 
         <li>
             <a 
-            routerLink='/admin/orders' 
+            routerLink='/order' 
             routerLinkActive="active"
             data-toggle="collapse" aria-expanded="false" 
             >Orders</a>      

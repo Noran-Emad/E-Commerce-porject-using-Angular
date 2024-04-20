@@ -1,0 +1,66 @@
+
+
+<div class="container">
+    <div class="shadow-lg col-md-12">
+        <img [src]="img" class="roundimg "  alt="">
+    </div>
+    
+    <div class="w-75 col-sm-12 mx-auto p-5">
+
+        <form (ngSubmit)="submitupdateForm(productForm)" [formGroup]="productForm">
+            <label for="name" class="my-2"> Name :</label>
+            <input  formControlName="name" type="text" class="form-control mb-2 input-mine" name="" >
+            <div *ngIf="productForm.get('name')?.errors && productForm.get('name')?.touched" class="alert alert-danger py-1">
+                <p class="m-0" *ngIf="productForm.get('name')?.errors?.['required']"> name is required</p>
+              </div>
+              
+              <label for="category">category :</label>
+              <select formControlName="category" class="form-control mb-2 input-mine" name="">
+                <option *ngFor="let category of categoris" [value]="category._id">{{ category.name }}</option>
+              </select>
+              
+              <div *ngIf="productForm.get('category')?.errors && productForm.get('category')?.touched" class="alert alert-danger py-1">
+                <p class="m-0" *ngIf="productForm.get('category')?.errors?.['required']">Category is required</p>
+              </div>
+        
+            <!-- <label class="my-2" for="category">category :</label>
+            <input  formControlName="category" type="text" class="form-control mb-2 input-mine" name="">
+            <div *ngIf="productForm.get('category')?.errors && productForm.get('category')?.touched" class="alert alert-danger py-1">
+                <p class="m-0" *ngIf="productForm.get('category')?.errors?.['required']">category required</p>
+                
+              </div> -->
+        
+            <label class="my-2" for="colors">Colors :</label>
+            <input  formControlName="colors" type="text" class="form-control mb-2 input-mine" name="">
+            
+            <div  *ngIf="productForm.get('colors')?.errors && productForm.get('colors')?.touched" class="alert alert-danger py-2">
+                <p class="m-0" *ngIf="productForm.get('colors')?.errors?.['required']">colors required</p>
+                
+              </div>
+        
+          
+        
+              <!-- <label for="images">images :</label> -->
+              
+              <input id="fileInput" formControlName="images" type="file" class="form-control mb-2 input-mine" name="images">
+              
+              <div *ngIf="productForm.get('images')?.errors && productForm.get('images')?.touched" class="alert alert-danger py-2">
+                  <p class="m-0" *ngIf="productForm.get('images')?.errors?.['required']">images required</p>
+                  
+                </div>
+           
+              
+        
+            <button [disabled]="productForm.invalid"  type="submit" class="btn btn-info" >
+                <span *ngIf="!isloadind" > update Product</span>
+        
+                <i *ngIf="isloadind" class="fas fa-spinner fa-spin"></i>
+        
+        
+            </button>
+           
+        </form>
+        </div>
+        
+</div>
+

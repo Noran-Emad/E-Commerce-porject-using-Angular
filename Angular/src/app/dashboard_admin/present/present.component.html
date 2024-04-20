@@ -1,0 +1,77 @@
+
+
+
+<div class="container">
+  
+ 
+
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-between">  
+        <div class="p-3">
+          <input [formControl]="termControl" placeholder="Search products" class="form-control " type="text" name="">
+      </div>
+      <div >
+        <button class="btn btn-primary m-3" (click)="goToAddProduct()"> Add New Product</button> 
+  
+      </div>
+    </div>
+    
+    <div class="col-md-12 col-sm-12">
+      <table class="table bg-danger">
+    
+        <thead>
+            <tr>
+                <th class="text-white">photo </th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Color</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+          
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of filteredProducts">
+        
+            <td>
+              <img [src]="product.images[0]" class="img-size rounded-5 " alt="">  
+            </td>
+            <td>
+              <h6 class="h6 my-2" style="font-size: medium;"> {{product.name}}</h6>
+              </td>
+              <td>              <h4 class="h6 my-2 lead textcolor" style="font-size: medium;">{{product.price}}</h4>
+              </td>
+              <td>              <h5 class="h6 my-2 lead textcolor" style="font-size: medium;">{{product.quantity}}</h5>
+              </td>
+              <td>
+                <h6 class="h6 my-2 lead textcolor" style="font-size: medium;"> {{product.colors}}</h6>
+  
+              </td>
+             
+             
+                <td >
+                  <a class="w-25" [routerLink]="['/update',product.id]">
+                    <button class="btn btn-success m-2 p-2 ">Update</button>
+                  </a>
+                   
+                </td>
+              
+  
+             
+              <td><button class="btn btn-danger m-2 p-2" (click)="Del(product.id,$event)">Delete</button>
+              </td>
+  
+              <td></td>
+         
+          </tr>
+        </tbody>
+      </table>
+  
+    
+    </div>
+    
+    </div>
+  
+  

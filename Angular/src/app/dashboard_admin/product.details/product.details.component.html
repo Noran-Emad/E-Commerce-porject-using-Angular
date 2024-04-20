@@ -1,0 +1,93 @@
+<div class="w-75 mx-auto py-3">
+  
+    <!-- <div *ngIf="error" class="alert alert-danger">{{error}}</div> -->
+<form (ngSubmit)="submitAddForm(productForm)" [formGroup]="productForm">
+    <label for="name"> Name :</label>
+    <input  formControlName="name" type="text" class="form-control mb-2 input-mine" name="">
+    <div *ngIf="productForm.get('name')?.errors && productForm.get('name')?.touched" class="alert alert-danger py-1">
+        <p class="m-0" *ngIf="productForm.get('name')?.errors?.['required']"> name is required</p>
+        <!-- <p class="m-0" *ngIf="productForm.get('first_name')?.errors?.['minlength']">first name min length is 3</p>
+        <p class="m-0" *ngIf="productForm.get('first_name')?.errors?.['maxlength']">first name max length is 10</p> -->
+      </div>
+
+
+
+
+    <label for="description">description :</label>
+    <textarea  formControlName="description" class="form-control mb-2 input-mine" name=""></textarea> 
+    <div *ngIf="productForm.get('description')?.errors && productForm.get('description')?.touched" class="alert alert-danger py-1">
+        <p class="m-0" *ngIf="productForm.get('description')?.errors?.['required']">description is required</p>
+        <!-- <p class="m-0" *ngIf="productForm.get('last_name')?.errors?.['minlength']">last name min length is 3</p>
+        <p class="m-0" *ngIf="productForm.get('last_name')?.errors?.['maxlength']">last name max length is 10</p> -->
+      </div>
+
+
+    <label for="price">price :</label>
+    <input  formControlName="price" type="number" class="form-control mb-2 input-mine" name="">
+    <div *ngIf="productForm.get('price')?.errors && productForm.get('price')?.touched" class="alert alert-danger py-1">
+        <p class="m-0" *ngIf="productForm.get('price')?.errors?.['required']">price is required</p>
+        <!-- <p class="m-0" *ngIf="productForm.get('age')?.errors?.['min']">Age min length is 16</p>
+        <p class="m-0" *ngIf="productForm.get('age')?.errors?.['max']">Age max length is 90</p> -->
+      </div>
+
+    <label for="category">category :</label>
+    <select formControlName="category" class="form-control mb-2 input-mine" name="">
+      <option *ngFor="let category of categoris" [value]="category._id">{{ category.name }}</option>
+    </select>
+    
+    <div *ngIf="productForm.get('category')?.errors && productForm.get('category')?.touched" class="alert alert-danger py-1">
+      <p class="m-0" *ngIf="productForm.get('category')?.errors?.['required']">Category is required</p>
+    </div>
+    <!-- <select formControlName="category" class="form-control mb-2 input-mine" name="">
+      <option value="{{categoris[0].id}}">{{categoris[0].name}}</option>
+      <option value="{{categoris[1].id}}">{{categoris[1].name}}</option>
+      <option value="{{categoris[2].id}}">{{categoris[2].name}}</option>
+      <option value="{{categoris[3].id}}">{{categoris[3].name}}</option>
+    </select> 
+    <div *ngIf="productForm.get('category')?.errors && productForm.get('category')?.touched" class="alert alert-danger py-1">
+        <p class="m-0" *ngIf="productForm.get('category')?.errors?.['required']">category required</p>
+        <p class="m-0" *ngIf="productForm.get('email')?.errors?.['email']">must be example.gmail</p>
+        
+      </div> -->
+
+    <label for="colors">Colors :</label>
+    <input  formControlName="colors" type="text" class="form-control mb-2 input-mine" name="">
+    
+    <div *ngIf="productForm.get('colors')?.errors && productForm.get('colors')?.touched" class="alert alert-danger py-2">
+        <p class="m-0" *ngIf="productForm.get('colors')?.errors?.['required']">colors required</p>
+        
+      </div>
+
+      <label for="quantity">quantity :</label>
+    <input  formControlName="quantity" type="number" class="form-control mb-2 input-mine" name="">
+    
+    <div *ngIf="productForm.get('quantity')?.errors && productForm.get('quantity')?.touched" class="alert alert-danger py-2">
+        <p class="m-0" *ngIf="productForm.get('colors')?.errors?.['required']">quantity required</p>
+        
+      </div>
+     
+
+      <label for="images">images :</label>
+      <!-- <img src="{{base64}}" alt=""> -->
+      <input id="fileInput" formControlName="images" type="file" class="form-control mb-2 input-mine" name="images">
+      <!-- (change)="getImagePath($event) -->
+      
+      <div *ngIf="productForm.get('images')?.errors && productForm.get('images')?.touched" class="alert alert-danger py-2">
+          <p class="m-0" *ngIf="productForm.get('images')?.errors?.['required']">images required</p>
+          
+        </div>
+  
+      
+
+    <button [disabled]="productForm.invalid"  type="submit" class="btn btn-info" >
+        <!-- [disabled]="productForm.invalid" -->
+        <span *ngIf="!isloadind" >Add Product</span>
+        <!-- *ngIf="!isloadind" -->
+
+        <i *ngIf="isloadind" class="fas fa-spinner fa-spin"></i>
+
+
+    </button>
+   
+</form>
+</div>
