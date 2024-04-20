@@ -1,4 +1,4 @@
-<div style="height: 3.5rem"></div>
+<div style="height: 3rem"></div>
 <nav
   class="navbar navbar-expand-lg navbar-light bg-grid text-white px-lg-5 fixed-top"
 >
@@ -28,27 +28,19 @@
 
         <ng-container>
           <li class="nav-item roundedcustom-circle cartnavitem">
-            <a routerLink="/cart" class="nav-link">
-              <span class="d-inline-block px-1 text-dark">Cart</span>
+            <a routerLink="/cart">
+              <span class="d-inline-block px-1 text-dark"><svg style="color: rgb(82, 60, 104);"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+              </svg></span>
               <span class="cartcountnum d-inline-block">{{ Count }}</span>
             </a>
           </li>
         </ng-container>
 
-        <!-- <li class="nav-item roundedcustom-circle cartnavitem mx-1">
-          <ng-container *ngIf="isuserLogged() else Unauthorderbtn">
-            <a routerLink="/orders"><span class="d-inline-block px-1 text-dark">Orders</span> </a>
-          </ng-container>
-
-          <ng-template #Unauthorderbtn>
-            <a style="cursor: pointer;" (click)="myalert()">
-              <span class="d-inline-block px-1 text-dark">Orders</span></a>
-          </ng-template>
-        </li> -->
 
         <li class="nav-item roundedcustom-circle cartnavitem mx-1" *ngIf="isuserLogged()">
           <ng-container>
-            <a routerLink="/orders" class="nav-link"
+            <a routerLink="/orders"
               ><span class="d-inline-block px-1 text-dark">Orders</span>
             </a>
           </ng-container>
@@ -60,7 +52,7 @@
         >
           <ng-container>
             <li class="nav-item roundedcustom-circle cartnavitem">
-              <a routerLink="profile" class="nav-link">
+              <a routerLink="profile">
                 <span class="d-inline-block px-1 text-dark" routerLink="profile"
                   >Profile</span
                 >
@@ -77,9 +69,9 @@
           </ng-container>
 
           <ng-template #Unauthlogbtn>
-            <a style="cursor: pointer" routerLink="login" class="nav-link"  >
+            <a style="cursor: pointer" routerLink="login">
               <span class="d-inline-block px-1 text-dark">Login</span></a
-            > 
+            >
           </ng-template>
         </li>
       </ul>

@@ -29,9 +29,9 @@
 
 .Qroundedcustome-circle {
     border-radius: 500px;
-    position: relative;
-    padding-left: 2.5rem;
-    margin-left: -2rem;
+    position: absolute;
+    padding-left: 1.5rem;
+    margin-left: -1rem;
     background-color: #fff3f3;
     font-size: 0.85rem;
 }

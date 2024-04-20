@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ErrorComponent } from '../error/error.component';
 import { TempAuthService } from '../../services/temp-auth.service';
 import { Router } from '@angular/router';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { min } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -11,15 +13,37 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.component.css'],
 })
 export class CartComponent implements OnInit {
+
+  myForm:FormGroup; 
+
+  getControls() {
+    return this.myForm.controls;
+  }
+
+
   CartProduct: any[] = [];
   TotalPrice: number = 0;
   localCartProgress = () => this.cartService.Lodingcart;
   disablecart = ():boolean => CartService.disablecart;
 
-  constructor(private cartService: CartService, private http: HttpClient, private auth: TempAuthService,private router: Router) { }
+  constructor(private cartService: CartService, private http: HttpClient, private auth: TempAuthService,private router: Router,private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.GetCart();
+
+    this.myForm = this.formBuilder.group({
+      shippingAddress: ['', [Validators.required, this.trimAndMinLengthValidator(6)]]
+    });
+    
+  }
+  trimAndMinLengthValidator(minLength: number) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const trimmedValue = control.value.trim(); // Trim the input value
+      if (trimmedValue.length < minLength) {
+        return { minLength: true };
+      }
+      return null;
+    };
   }
   public createRange(number: number): number[] {
     return new Array(number).fill(0).map((n, index) => index + 1);
@@ -37,15 +61,15 @@ export class CartComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+    if (this.myForm.invalid) return;
+    
     this.cartService.Lodingcart = true;
-   
 
     if (this.CartProduct.length <= 0) return;
-    const headers = new HttpHeaders({ jwt: `${localStorage.getItem('jwt')}` });
     let PlaceOrderURL = `http://localhost:3000/api/order/add`;
-    this.http.post(PlaceOrderURL, null, { headers: headers }).subscribe((res: any) => {
+    this.http.post(PlaceOrderURL, this.myForm.value).subscribe((res: any) => {
       let CheckoutURL = `http://localhost:3000/api/payment/checkout/${res._id}`;
-      this.http.post(CheckoutURL, null, { headers: headers }).subscribe((r: any) => {
+      this.http.post(CheckoutURL, null).subscribe((r: any) => {
         window.location.href = r.paymentlink
       })
     },error=> ErrorComponent.ShowMessage(error.error));
@@ -70,6 +94,10 @@ export class CartComponent implements OnInit {
     });
   }
 
+ clearCart():void{
+  this.cartService.clearCart();
+ }
+
   GetTotalPrice(cart: any) {
     let total = 0;
     cart.forEach((item: any) => {
@@ -84,4 +112,5 @@ export class CartComponent implements OnInit {
     });
     return total;
   }
+
 }

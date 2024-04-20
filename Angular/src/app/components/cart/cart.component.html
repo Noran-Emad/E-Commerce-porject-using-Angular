@@ -96,20 +96,35 @@
           </div>
 
         </ng-container>
+        <button class="btn btn-danger px-4 my-4" (click)="clearCart()">clear cart</button>
       </div>
 
 
       <div class="card text-center col-12 col-md-4 p-0 myorder mt-5">
-        <h5 class="card-title pt-3 pb-0 pt-lg-5  pb-lg-4 ">Order Summary</h5>
+        <h5 class="card-title pt-1 pb-0 pt-lg-4  pb-lg-0 ">Order Summary</h5>
         <hr>
+        <form [formGroup]="myForm">
         <div class="card-body">
-          <h5 class="card-title pt-lg-5">Total Price</h5>
-          <h4 class="card-title pt-3 pb-lg-5">{{TotalPrice | currency:'EGP'}}</h4>
+            <input formControlName="shippingAddress" placeholder="shipping address" class="py-2 px-3 w-100">
+
+
+            <div class="text-danger mt-2" *ngIf="myForm.controls['shippingAddress']?.errors">
+              <div *ngIf="myForm.controls['shippingAddress']?.errors?.['required']">
+                Shipping Address is required.
+              </div>
+              <div *ngIf="myForm.controls['shippingAddress']?.errors?.['minlength']">
+                Shipping Address must be at least 6 characters long.
+              </div>
+            </div>
+
+            <h5 class="card-title pt-lg-3">Total Price</h5>
+            <h4 class="card-title pt-0 pb-lg-0">{{TotalPrice | currency:'EGP'}}</h4>
+          </div>
+          <div class="card-footer text-muted bg-gridant">
+            <button style="border: none;" [disabled]="myForm.invalid" (click)="PlaceOrder()" class="btn text-white w-100 p-2">place Order</button>
+          </div>
+        </form>
         </div>
-        <div class="card-footer text-muted bg-gridant">
-          <button (click)="PlaceOrder()" class="btn text-white w-100 p-2">place Order</button>
-        </div>
-      </div>
     </ng-template>
 
   </div>

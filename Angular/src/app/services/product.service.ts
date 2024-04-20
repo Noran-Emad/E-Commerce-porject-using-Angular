@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ErrorComponent } from '../components/error/error.component';
 import { CartService } from './cart.service';
+import { error } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -45,10 +46,14 @@ export class ProductService {
             this.TotalPagesDataSubject.next(productsData.TotalPages);
             this.Lodingproduct = false;
           },
-          (error) => {
+        error => {
+            this.Lodingproduct = false;
             ErrorComponent.ShowMessage(error.error)
           }
           );
+    },error=>{
+      this.Lodingproduct = false;
+      ErrorComponent.ShowMessage(error.error)
     })
     }
   }

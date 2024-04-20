@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TempAuthService } from '../../services/temp-auth.service';
 
 @Component({
   selector: 'app-error',
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './error.component.css'
 })
 export class ErrorComponent {
+  constructor(private authservice:TempAuthService){}
 
   LocalMessage = () => ErrorComponent.ErrorMessage;
   LocalShow = () => ErrorComponent.Show;
@@ -20,6 +22,10 @@ static  Show: boolean = false;
   }
 
  static HideMessage() {
+   if(this.ErrorMessage === 'invalid token'){
+    localStorage.clear();
+    window.location.href = '/'
+   }
     this.ErrorMessage = '';
     this.Show = false;
   }

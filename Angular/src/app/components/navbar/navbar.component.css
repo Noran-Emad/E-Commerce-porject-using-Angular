@@ -30,14 +30,14 @@
 
 .roundedcustom-circle a{
 display: flex;
-/* flex-direction: column; */
+flex-direction: column;
 justify-content: center;
 }
 .roundedcustom-circle a span{
   padding-top: 0.15rem;
   }
 
-  
+
 .my-nav-items li {
   background-color: rgb(255, 255, 255);
   position: relative;
@@ -45,10 +45,6 @@ justify-content: center;
 }
 .itemsNot li{
   position: relative;
-  color: rgb(255, 255, 255) !important;
-}
-
-.itemsNot li a, .itemsNot li span {
   color: rgb(255, 255, 255) !important;
 }
 
@@ -60,10 +56,11 @@ justify-content: center;
 }
 
 .cartcountnum {
-  background-color: rgb(47, 47, 71);
-  min-width: 1.5rem;
-  color: white;
+  /* background-color: rgb(47, 47, 71); */
+  /* min-width: 1.5rem; */
+  font-weight: 600;
+  color: rgb(144, 53, 73);
   border-radius: 50%;
-  max-width: 1.5rem;
+  /* max-width: 1.5rem; */
   display: inline-block;
 }

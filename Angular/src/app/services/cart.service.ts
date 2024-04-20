@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ErrorComponent } from '../components/error/error.component';
-import { TempAuthService } from './temp-auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,13 +17,14 @@ export class CartService {
 
   public static disablecart: boolean = false;
 
-  constructor(private http: HttpClient,private auth:TempAuthService) { }
+  constructor(private http: HttpClient) { }
+  public IsLogged = (): boolean => localStorage.getItem('jwt') != null;
 
 
 
   GetCart(): void {
     /* if the user logged get the cart from the backend */
-    if(this.auth.IsLogged()){
+    if(this.IsLogged()){
       
       const cartURL = 'http://localhost:3000/api/cart/';
       this.http.get<any[]>(cartURL).subscribe((cartData: any) => {
@@ -32,6 +32,7 @@ export class CartService {
         this.Lodingcart = false;
       },
       (error) => {
+        this.Lodingcart = false;
         ErrorComponent.ShowMessage(error.error)
       });
     }else{
@@ -49,7 +50,7 @@ export class CartService {
     let currentCartData = this.cartDataSubject.getValue();
     let updatedcart = [...currentCartData, item]
     this.cartDataSubject.next(updatedcart);
-    if(this.auth.IsLogged()){
+    if(this.IsLogged()){
 
       /* if logged add it by api */
       this.http.post('http://localhost:3000/api/cart/add',
@@ -76,7 +77,7 @@ export class CartService {
     let updated = currentCartData.filter((item) => item.Product._id !== id);
     this.cartDataSubject.next(updated);
 
-    if(this.auth.IsLogged()){
+    if(this.IsLogged()){
       /* if logged remove it by api */
       let RemoveFromcartURL = `http://localhost:3000/api/Cart/remove/${id}`;
       this.http.delete(RemoveFromcartURL).subscribe(() => {
@@ -106,7 +107,7 @@ export class CartService {
     });
     
 
-    if(this.auth.IsLogged()){
+    if(this.IsLogged()){
       /* if logged update the cart by api */
       let UpdateProduct = `http://localhost:3000/api/cart/update/${pid}`;
       this.http.patch(UpdateProduct, { Quantity: newQty }).subscribe(() => {
@@ -125,6 +126,21 @@ export class CartService {
     }
   }
 
+  clearCart():void{
+    /* get the cart data incase of faliture of the request */
+    let cartval = this.cartDataSubject.getValue();
+    this.cartDataSubject.next([]);
+    localStorage.setItem('tempcart','[]')
+    /* if the user is not logged end the function and don't send http request */
+    if(!this.IsLogged()) return;
+    
+    let clearCartURL = 'http://localhost:3000/api/cart/clear';
+    this.http.delete(clearCartURL).subscribe(()=>{
+
+    },error=>{
+      this.cartDataSubject.next(cartval);
+    })
+  }
 
   isLoding(): boolean {
     return this.Lodingcart;

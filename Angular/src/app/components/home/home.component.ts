@@ -55,8 +55,6 @@ export class HomeComponent implements OnDestroy {
     this.sort = this.productservice.sort;
 
 
-
-
     this.categoryservice.GetCategories();
     this.productservice.getProducts(isok);
     

@@ -11,8 +11,29 @@
     z-index: 10;
 }
 .myalert{
-    background-image: linear-gradient(250deg, #a7a6cb 0%, #8989ba 52%, #8989ba 100%);
+    /* background-image: linear-gradient(250deg, #a7a6cb 0%, #8989ba 52%, #8989ba 100%); */
+    background-color: white;
+    color: black;
 }
+.headeralert{
+display: flex;
+justify-content: space-between;
+padding: 0.5rem 3%;
+}
+
+.circles span{
+    background-color:rgb(166, 128, 167);
+    margin:auto 0.2rem;
+    min-width: 1.1rem;
+    max-width: 1.1rem;
+
+    min-height: 1.1rem;
+    max-height: 1.1rem;
+
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
 .mybtn{
     background-image: linear-gradient(62deg, #44385c 0%, #463b4f 100%);
 }
