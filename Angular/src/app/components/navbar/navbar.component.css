@@ -30,14 +30,14 @@
 
 .roundedcustom-circle a{
 display: flex;
-flex-direction: column;
+/* flex-direction: column; */
 justify-content: center;
 }
 .roundedcustom-circle a span{
   padding-top: 0.15rem;
   }
 
-
+  
 .my-nav-items li {
   background-color: rgb(255, 255, 255);
   position: relative;
@@ -45,6 +45,10 @@ justify-content: center;
 }
 .itemsNot li{
   position: relative;
+  color: rgb(255, 255, 255) !important;
+}
+
+.itemsNot li a, .itemsNot li span {
   color: rgb(255, 255, 255) !important;
 }
 

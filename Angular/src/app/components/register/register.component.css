@@ -20,27 +20,28 @@ form {
 }
 
 .reg-btn {
-  background-color: #512bd4;
-  border-color: rgb(81 43 212);
+  background-color: #45395A;
+  border-color: #45395A;
   color: white;
 }
 
 .reg-btn:hover {
-  background-color: #4122aa;
+  background-color: #342b43;
 }
 
 .login-link {
-  color: #512bd4;
+  color: #45395A;
 }
 
 .login-link:hover {
-  color: #4122aa;
+  color: #342b43;
 }
 
 input:focus:not(.invalid) {
-  border-color: #512bd4;
-  box-shadow: 0 0 5px 0 #512bd4;
+  border-color: #45395A;
+  box-shadow: 0 0 5px 0 #45395A;
 }
+
 
 .invalid {
   border-color: red;
