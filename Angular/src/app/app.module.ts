@@ -15,8 +15,6 @@ import { ProductItemComponent } from './components/product-item/product-item.com
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { ErrorComponent } from './components/error/error.component';
 import { PaymentComponent } from './components/payment/payment.component';
-import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
-// import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AuthInterceptor } from './authinterceptor.interceptor';
 import { RegisterComponent } from './components/register/register.component';
 import { DefaultLayoutComponent } from './components/default-layout/default-layout.component';
@@ -27,6 +25,13 @@ import { LoginComponent } from './components/login/login.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard.component';
+import { AdminSidebarComponent } from './admin/components/admin-sidebar/admin-sidebar.component';
+import { EditProductComponent } from './admin/components/edit-product/edit-product.component';
+import { AdminProductsComponent } from './admin/components/admin-products/admin-products.component';
+import { AdminProductItemComponent } from './admin/components/admin-product-item/admin-product-item.component';
+import { AdminProductsPageComponent } from './admin/components/admin-products-page/admin-products-page.component';
+import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orders.component';
 
 
 
@@ -44,12 +49,17 @@ import { ProfileComponent } from './components/profile/profile.component';
     PaginationComponent,
     ErrorComponent,
     PaymentComponent,
-    // AdminSidebarComponent,
-    // AdminDashboardComponent,
     DefaultLayoutComponent,
     LoginComponent,
     ProfileComponent,
-    RegisterComponent
+    RegisterComponent,
+    AdminDashboardComponent,
+    AdminSidebarComponent,
+    EditProductComponent,
+    AdminProductsComponent,
+    AdminProductItemComponent,
+    AdminProductsPageComponent,
+    AdminOrdersComponent
     // ProductComponent,
     // AddproductComponent,
     // PendingorderComponent,

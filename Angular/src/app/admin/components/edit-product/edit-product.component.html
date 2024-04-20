@@ -1,0 +1,58 @@
+<div class="container">
+    <h3>Edit Product</h3>
+    <form id="edit-form" method="GET">
+
+        <div class="labels">
+            <label id="name-label" for="name">* Product Name</label>
+        </div>
+        <div class="input-tab">
+            <input class="input-field" type="text" id="name" name="name" placeholder="Enter Product name" required
+                autofocus>
+        </div>
+
+        <div class="labels">
+            <label id="number-label" for="number">* Count</label>
+        </div>
+        <div class="input-tab">
+            <input class="input-field" type="number" id="number" name="number" min="1" placeholder="1" required>
+        </div>
+
+        <div class="labels">
+            <label id="number-label" for="number">* Price</label>
+        </div>
+        <div class="input-tab">
+            <input class="input-field" type="number" id="number" name="number" min="1" placeholder="1$" required>
+        </div>
+
+
+        <div class="labels">
+            <label for="dropdown">Catigorie Name</label>
+        </div>
+        <div class="input-tab">
+            <select id="dropdown" name="catigory">
+                <option disabled value selected>Catigorie Name</option>
+                <option value="web">Website</option>
+                <option value="hulu">Hulu</option>
+                <option value="youtube">Youtube</option>
+                <option value="tv">TV</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="labels">
+            <label for="comments">Description</label>
+        </div>
+        <div class="input-tab">
+            <textarea class="input-field" id="comments" name="comments" rows="10" cols="40"
+                placeholder="Prouduct Description..."></textarea>
+        </div>
+
+        <div class="btn">
+            <button class="controlbtn" type="submit" routerLink='/admin/products/add' routerLinkActive="active"
+                data-toggle="collapse" aria-expanded="false">Save</button>
+            <button class="controlbtn" type="submit" routerLink='/admin/products/add' routerLinkActive="active"
+                data-toggle="collapse" aria-expanded="false">Delete</button>
+        </div>
+
+    </form>
+</div>

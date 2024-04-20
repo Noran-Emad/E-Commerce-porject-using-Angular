@@ -1,0 +1,39 @@
+body, html {
+    color: #fff;
+    font-family: 'Abel', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+  }
+  body {
+    font-size: 1.2em;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://wallpapercave.com/wp/Fdh76FQ.jpg) center no-repeat fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    background-size: cover;
+  }
+  #title{
+    background-color: #a7a6cb;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 15px;
+    width: 70%;
+    margin: 0 auto;
+  }
+  #title h3{
+    font-size: 2em;
+    text-align: center;
+  }
+  .container {
+    border-radius: 20px;
+    margin: auto;
+    width: 90%;
+    padding: 1em;
+    
+  }
+  form{
+        margin: 0 auto;
+        width: 80%;
+        padding: 10px;
+  }  

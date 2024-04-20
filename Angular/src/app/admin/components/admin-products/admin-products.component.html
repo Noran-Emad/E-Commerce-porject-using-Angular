@@ -1,0 +1,6 @@
+<div class="container-lg .container-sm .container-md .container-xl .container-xxl">
+    <div id="custom-slider" class="carousel slide" data-bs-ride="carousel">
+        <app-admin-product-item [products]="products" [TotalPages]="TotalPages"
+            (RefreshProducts)="GetProducts($event,true)"></app-admin-product-item>
+    </div>
+</div>

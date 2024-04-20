@@ -1,0 +1,38 @@
+<div class="container">
+    
+    <h1 id="title" class="border-bottom border-dark">Edit Order Status</h1>
+    <form [formGroup]="editOrderForm">
+        <div class="form-group d-flex" *ngFor="let o of products">
+            <label class="col-5">product Id: <a routerLink="/products/{{o.productId}}" style="text-decoration: none;">
+                {{o.productId}}</a></label>
+            </div>
+            <div class="form-group d-flex">
+        <label class="col-5">user Id: <a routerLink="/users/{{order.userId}}" style="text-decoration: none;">
+            {{order.userId}}</a></label>
+        </div>
+        <div class="form-group d-flex">
+            <label class="col-5">Order Date: {{order.orderDate}} </label>
+        </div>
+        <div class="form-group d-flex">
+            <label class="col-8">Total Price: {{order.totalPrice}}</label>
+        </div>
+        
+        <div class="form-group d-flex">
+            <label class="col-5">Order Status: </label>
+            <select #OrderStatus name="orderStatus">
+                <option value="Change Status" disabled="disabled" selected="selected">Change Status</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Pending">Pending</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+        
+        <div class="form-group d-flex justify-content-center m-2">
+            <!-- <input type="button" value="Edit" /*(click)="editOrder(OrderStatus.value)" */ 
+                routerLink="/orders"
+                class="btn btn-outline-dark"> -->
+            </div>
+            
+        </form>
+        
+    </div>

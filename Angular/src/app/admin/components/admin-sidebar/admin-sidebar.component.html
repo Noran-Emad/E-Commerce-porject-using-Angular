@@ -1,42 +1,31 @@
-    <!-- Sidebar Components -->
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <h3>Admin Dashboard</h3>
-        </div>
-        
-        <ul class="list-unstyled components">    
-            <li>
-                <a [routerLinkActiveOptions]="{exact:false}" 
-                routerLink='/admin/products' 
-                routerLinkActive="active"
-                data-toggle="collapse" aria-expanded="false" 
-                >Products</a>      
-            </li>
-
-            <li>
-                <a [routerLinkActiveOptions]="{exact:false}" 
-                routerLink='/admin/orders' 
-                routerLinkActive="active"
-                data-toggle="collapse" aria-expanded="false" 
-                >Orders</a>      
-            </li>
-            <li>
-                <a [routerLinkActiveOptions]="{exact:false}" 
-                routerLink='/admin/products' 
-                routerLinkActive="active"
-                data-toggle="collapse" aria-expanded="false" 
-                >Catigories</a>      
-            </li>
-        </ul>
-    </nav>
-
+<!-- Sidebar Components -->
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <h2>Admin Dashboard</h2>
+    </div>
     
-<!-- 
-<script>
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-    });
+    <ul class="list-unstyled components">    
+        <li>
+            <a  
+            routerLink='/admin/products' 
+            routerLinkActive="active"
+            data-toggle="collapse" aria-expanded="false" 
+            >Products</a>      
+        </li>
 
-</script> -->
+        <li>
+            <a 
+            routerLink='/admin/orders' 
+            routerLinkActive="active"
+            data-toggle="collapse" aria-expanded="false" 
+            >Orders</a>      
+        </li>
+        <!-- <li>
+            <a  
+            routerLink='/admin/products' 
+            routerLinkActive="active"
+            data-toggle="collapse" aria-expanded="false" 
+            >Catigories</a>      
+        </li> -->
+    </ul>
+</nav>
